@@ -14,16 +14,18 @@ import {
   TopSection,
 } from "./footer.styles";
 import { useTranslation } from "react-i18next";
-
+import logo from "../../../assets/images/logo1.png"
 const Footer = () => {
   const { t } = useTranslation();
   return (
     <FooterContainer>
       <>
         <TopSection>
-          <Row className="" style={{ rowGap: "20px" }}>
+          <Row className="" style={{ rowGap: "20px", columnGap:"0px" }}>
             <Col md={12} lg={2}>
-              <Logo>{t("footer.logo")}</Logo>
+              <Logo>
+                <img src={logo} alt="Logo"/>
+              </Logo>
             </Col>
             <Col md={6} lg={2}>
               <FooterLinkTitle>{t("footer.quickLinksTitle")}</FooterLinkTitle>

@@ -12,6 +12,7 @@ import FAQSection from "./components/homePageComponents/FAQSectionComponents/FAQ
 import AboutUs from "./components/homePageComponents/aboutUsSection/AboutUs"
 import Testimonial from "./components/homePageComponents/testimonialSection/Testimonial"
 import Footer from "./components/ui/footer/Footer"
+import SignUp from "./pages/singnUp/SignUp"
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
     <AboutUs/>
     <Testimonial/>
     <Footer/>
+    {/* <SignUp/> */}
    </ThemeProvider>
     </div>
   )

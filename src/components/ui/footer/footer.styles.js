@@ -12,12 +12,23 @@ export const TopSection = styled.div`
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 30px;
   margin-bottom: 30px;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
-export const Logo = styled.h2`
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 15px;
+export const Logo = styled.div`
+  /* width: 150px ;  */
+  @media (max-width: 992px){
+    width: 50%;
+    margin: auto;
+  }
+  @media (max-width: 500px){
+    width: 70%;
+  }
+  img{
+    max-width: 100%;
+  }
 `;
 
 export const Description = styled.p`

@@ -6,7 +6,8 @@ import MyThemSwitch from '../../themSwitch/ThemSwitch';
 import LangSwitch from '../../langSwitch/LangSwitch';
 import { StyledNavbar, StyledNavLink } from './navbar.styles';
 import { useTranslation } from 'react-i18next';
-
+import logo from ".././../../assets/images/gpt.png"
+import styled from 'styled-components';
 
 const CustomNavbar = () => {
   // حالة للتحكم بفتح وإغلاق القائمة
@@ -36,12 +37,21 @@ const CustomNavbar = () => {
     setExpanded(false);
   }, [location]);
 
+  const Logo = styled.div`
+    width: 100px;
+    img{
+      max-width: 100%;
+    }
+  `
   return (
     <div ref={navRef}>
       <StyledNavbar  expand="lg" expanded={expanded}>
         <MyContainer>
           <Navbar.Brand as={NavLink} to="/">
-            {t("navbar.logo")}
+            {/* {t("navbar.logo")} */}
+          <Logo>
+              <img src={logo} />
+          </Logo>
           </Navbar.Brand>
          
           <Navbar.Collapse className="justify-content-center" id="basic-navbar-nav">

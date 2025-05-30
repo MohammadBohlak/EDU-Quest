@@ -5,12 +5,13 @@ import styled from "styled-components";
 
 export const StyledNavbar = styled(Navbar)`
   background : #fff ; 
-  height: 80px;
+  height: 100px;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
   position: fixed ; 
   width: 100%;
   top: 33px ; 
   z-index: 10000000; 
+  padding: 0%;;
 
   .navbar-collapse{
     background-color: #fff;
