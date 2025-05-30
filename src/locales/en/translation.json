@@ -1,0 +1,99 @@
+{
+  "navbar": {
+    "logo": "Logo Here",
+    "navLinks": {
+      "home": "Home",
+      "courses": "Courses",
+      "testimonial": "Testimonials",
+      "questions": "Questions",
+      "about": "About"
+    },
+    "languageSwitch": "Language",
+    "themeSwitch": "Theme",
+    "toggleMenu": "Toggle Menu"
+  },
+  "hero": {
+    "startFavouriteCourse": "Start your Favourite Course",
+    "educationJourney": "Your Education Journey to Knowledge Begins Here",
+    "exploreLearnGrow": "Explore, Learn, and Grow",
+    "startCourseButton": "Started course",
+    "loginButton": "Login",
+    "courseLabel": "course",
+    "visitorLabel": "visitor",
+    "notAccount": "If You not Account Befor ?" , 
+    "signUp": "Sign Up"
+  },
+  "courses": {
+    "title1": "All",
+    "title2": "Courses",
+    "title3": "Of Platform",
+    "searchPlaceholder": "Search your course",
+    "searchButton": "Search"
+  },
+
+  "faq": {
+    "title1": "Any",
+    "title2": "Question",
+    "title3": "?",
+    "subtitle": "We got you",
+    "description": "More than 120 people asked many questions, we reply as soon as possible.",
+    "otherQuestionsButton": "Other Questions",
+    "addQuestionButton": "Add Question",
+    "frequentlyQuestions": "Frequently Asked Questions",
+    "questions": {
+      "0": "What fields of courses are available on the platform?",
+      "1": "How can I benefit from embedded exercises in the video?",
+      "2": "Are there certificates after completing courses?",
+      "3": "How can I search for a specific course?"
+    },
+    "answers": {
+      "0": "The platform offers courses in various fields such as programming, design, digital marketing, personal development, and more. You can browse and benefit from all courses for free.",
+      "1": "While watching lessons, interactive exercises will appear to help you test your understanding of the content instantly.",
+      "2": "Since the platform is free, certificates are not currently available. However, you can gain practical skills and benefit from exercises to enhance your expertise.",
+      "3": "You can use the search feature within the website to find courses by field or course title."
+    }
+  },
+  "aboutUs": {
+    "title": "About Us",
+    "welcomeMessage": "Welcome to our free online education platform",
+    "description": "We are here to provide you with a unique and accessible learning experience. Our mission is to empower learners of all ages to access the knowledge and skills they need to achieve their aspirations. Our platform offers a diverse range of courses covering various fields, with content created by experts in each discipline. We believe that education is a right for everyone, and we strive to create an inclusive and supportive learning environment."
+  },
+  "testimonial": {
+    "title": "Testimonial",
+    "question": "What did our Students say About us?",
+    "description": "Our students love the platform, they appreciate the engaging content and the flexibility it offers for learning at their own pace."
+  },
+  "testimonialSwiper": {
+    "quote": "This platform has made learning so much easier and enjoyable. The interactive lessons keep me engaged, and I love the flexibility it offers.",
+    "name": "Mohammad Bohlak",
+    "date": "6/4/2025"
+  },
+  "footer": {
+    "logo": "Logo Here",
+    "quickLinksTitle": "Quick links",
+    "quickLinks": {
+      "home": "Home",
+      "courses": "Courses",
+      "questions": "Questions",
+      "about": "About",
+      "testimonial": "Testimonial"
+    },
+    "usefulLinksTitle": "Useful links",
+    "usefulLinks": {
+      "privacyPolicy": "Privacy Policy",
+      "termsConditions": "Terms and Conditions",
+      "support": "Support",
+      "faq": "FAQ"
+    },
+    "contactTitle": "Contact us",
+    "contact": {
+      "phone": "+963994917823",
+      "email": "farahsalem33@gmail.com"
+    },
+    "subscribeTitle": "Subscribe",
+    "subscribePlaceholder": "Enter email address",
+    "subscribeButton": "Send",
+    "socialMediaTitle": "Follow us on social media",
+    "copyright": "© 2025 CompanyName. All Rights Reserved."
+  }
+}
