@@ -13,25 +13,12 @@ import AboutUs from "./components/homePageComponents/aboutUsSection/AboutUs";
 import Testimonial from "./components/homePageComponents/testimonialSection/Testimonial";
 import Footer from "./components/ui/footer/Footer";
 import SignUp from "./pages/singnUp/SignUp";
-import axios from "axios";
 
 function App() {
   // const lang = useSelector((state) => state.lang.language)
   const { i18n } = useTranslation();
   const theme = useSelector((state) => state.theme);
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
-  const url = "https://eduquest-9dio.onrender.com/api/register";
-
-  axios
-    .post(url, {
-      first_name: "mmmm",
-      last_name: "sssss",
-      email: "a@a.aaaaaa",
-      password: "12345678",
-      password_confirmation: "12345678",
-    })
-    .then((res) => console.log(res.data))
-    .catch((err) => console.log(err));
 
   return (
     <div dir={direction}>
