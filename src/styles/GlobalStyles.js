@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -8,7 +8,12 @@ export const GlobalStyles = createGlobalStyle`
     transition: all 0.3s;
   }
   html{
+    font-family: 'Lato', sans-serif !important;
     font-size: 10px;
+  }
+  body{
+
+    font-family: 'Lato', sans-serif !important;
   }
  
   :root{
