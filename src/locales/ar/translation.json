@@ -1,5 +1,5 @@
 {
-   "navbar": {
+  "navbar": {
     "logo": "الشعار هنا",
     "navLinks": {
       "home": "الرئيسية",
@@ -20,7 +20,7 @@
     "loginButton": "تسجيل الدخول",
     "courseLabel": "دورة",
     "visitorLabel": "زائر",
-    "notAccount": "هل لا تملك حساب من قبل ؟" , 
+    "notAccount": "هل لا تملك حساب من قبل ؟",
     "signUp": "إنشاء حساب"
   },
   "courses": {
@@ -94,5 +94,21 @@
     "subscribeButton": "إرسال",
     "socialMediaTitle": "تابعنا على مواقع التواصل الاجتماعي",
     "copyright": "© 2025 CompanyName. جميع الحقوق محفوظة."
+  },
+  "signup": {
+    "title": "إنشاء حساب",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "button": "إنشاء حساب"
+  },
+
+  "login": {
+    "title": "مرحبًا",
+    "subtitle": "سجّل الدخول إلى حسابك للمتابعة",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "button": "تسجيل الدخول"
   }
 }

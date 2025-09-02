@@ -20,7 +20,7 @@
     "loginButton": "Login",
     "courseLabel": "course",
     "visitorLabel": "visitor",
-    "notAccount": "If You not Account Befor ?" , 
+    "notAccount": "If You not Account Befor ?",
     "signUp": "Sign Up"
   },
   "courses": {
@@ -95,5 +95,20 @@
     "subscribeButton": "Send",
     "socialMediaTitle": "Follow us on social media",
     "copyright": "© 2025 CompanyName. All Rights Reserved."
+  },
+  "signup": {
+    "title": "Sign Up",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email address",
+    "password": "Password",
+    "button": "Sign Up"
+  },
+  "login": {
+    "title": "Welcome",
+    "subtitle": "Log in to your account to continue",
+    "email": "Email address",
+    "password": "Password",
+    "button": "Login"
   }
 }

@@ -15,14 +15,15 @@ import {
 } from "./hero.styles";
 import man from "../../../assets/images/man.png";
 import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 export default function Hero() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <HeroSection id="hero">
       <MyContainer>
         <Row style={{ justifyContent: "space-between" }}>
           <LeftHero md={12} xl={6}>
-            {/* <NormalText>Start your Favourite Course</NormalText> */}
             <NormalTextSecondary>
               {t("hero.startFavouriteCourse")}
             </NormalTextSecondary>
@@ -32,14 +33,27 @@ export default function Hero() {
             </NormalTextSecondary>
             <Buttons>
               <PrimaryButton>{t("hero.startCourseButton")}</PrimaryButton>
-              <SecondaryButton>{t("hero.loginButton")}</SecondaryButton>
+              <SecondaryButton
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                {t("hero.loginButton")}
+              </SecondaryButton>
             </Buttons>
-            <NormalTextSecondary>
+            <NormalTextSecondary
+            // onClick={() => {
+            //   // navigate("/signup");
+            // }}
+            >
               {t("hero.notAccount")}
-              <a style={{ textDecoration: "underline", color: "#007BFF" }}>
+              <Link
+                to="/signup"
+                style={{ textDecoration: "underline", color: "#007BFF" }}
+              >
                 {" "}
                 {t("hero.signUp")}
-              </a>
+              </Link>
             </NormalTextSecondary>
           </LeftHero>
 
