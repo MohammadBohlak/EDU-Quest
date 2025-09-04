@@ -41,6 +41,7 @@ export const UserName = styled.div``;
 // `;
 export const CourseCard = styled(Card)`
   width: 100%;
+  max-width: 350px;
   border: none;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
@@ -97,6 +98,7 @@ export const CourseInfo = styled.div`
 export const CourseFooter = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 export const StyledCoursesList = styled.div`
   display: grid;

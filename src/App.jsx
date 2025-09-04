@@ -19,8 +19,30 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import axios from "axios";
 import { useEffect } from "react";
 import Courses from "./pages/courses/Courses";
+import DataProvider from "./context/DataProvider";
+import Loader from "./components/ui/Loader";
+import { api } from "./utils/api/api";
+import Course from "./pages/course/Course";
+import VideoPlayer from "./components/ui/videoPlayer/VideoPlayer";
+const checkYouTubeVideo = async (videoId) => {
+  const isFound = await axios
+    .get(
+      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
+    )
+    .then((res) => {
+      return true;
+    })
+    .catch((err) => {
+      console.log();
+      if (err.response.status === 404) return false;
+    });
+  return isFound;
+  // checkYouTubeVideo("8YVCaUm35oA").then((res) => console.log(res));
+};
 
 function App() {
+  // https://www.youtube.com/watch?v=dQw4w9WgXcQ
+  // console.log(checkYouTubeVideo("dQw4w9WgXcQ"));
   // useEffect(() => {
   //   axios
   //     .post("https://edu-f.onrender.com/api/login", {
@@ -34,6 +56,7 @@ function App() {
   // const lang = useSelector((state) => state.lang.language)
   const { i18n } = useTranslation();
   const theme = useSelector((state) => state.theme);
+  const isLoading = useSelector((state) => state.loader.isLoading);
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
   return (
@@ -45,34 +68,38 @@ function App() {
             : { ...darkTheme, lang: i18n.language }
         }
       >
-        <GlobalStyles />
-
-        {/* <SignUp /> */}
-        <Routes>
-          <Route
-            // path="/"
-            index
-            element={
-              <>
-                <CustomNavbar />
-                <Hero />
-                <CoursesSection />
-                <FAQSection />
-                <AboutUs />
-                <Testimonial />
-                <Footer />
-              </>
-            }
-          />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<div>dashboard</div>} />
-            <Route path="users" element={<div>users</div>} />
-            <Route path="courses" element={<Courses />} />
-            <Route path="settings" element={<div>settings</div>} />
-          </Route>
-        </Routes>
+        <DataProvider>
+          <GlobalStyles />
+          {isLoading && <Loader />}
+          {/* <SignUp /> */}
+          <Routes>
+            <Route
+              // path="/"
+              index
+              element={
+                <>
+                  <CustomNavbar />
+                  <Hero />
+                  <CoursesSection />
+                  <FAQSection />
+                  <AboutUs />
+                  <Testimonial />
+                  <Footer />
+                </>
+              }
+            />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route index element={<div>dashboard</div>} />
+              <Route path="users" element={<div>users</div>} />
+              <Route path="courses" element={<Courses />} />
+              <Route path="courses/:id" element={<Course />} />
+              <Route path="courses/:id/:videoId" element={<VideoPlayer />} />
+              <Route path="settings" element={<div>settings</div>} />
+            </Route>
+          </Routes>
+        </DataProvider>
       </ThemeProvider>
     </div>
   );

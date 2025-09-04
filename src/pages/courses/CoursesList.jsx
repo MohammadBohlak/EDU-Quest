@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { MdOutlineDelete } from "react-icons/md";
+import { BiMessageSquareEdit } from "react-icons/bi";
+import { AiOutlineAppstoreAdd } from "react-icons/ai";
+import { useContext, useEffect, useState } from "react";
 import ui from "../../assets/images/ui.png";
 import {
   CircleImg,
@@ -10,93 +13,78 @@ import {
   CourseTitle,
   StyledCoursesList,
 } from "./courses.styles";
-import {
-  NormalTextPrimaryShared,
-  NormalTextShared,
-} from "../../components/common/texts/NormalText";
+import { NormalTextPrimaryShared } from "../../components/common/texts/NormalText";
 import { PrimarySharedButton } from "../../components/common/buttons/PrimaryButton";
-import { useEffect } from "react";
 import { api } from "../../utils/api/api";
+import styled from "styled-components";
+import ConfirmModal from "../../components/ui/modals/confirmModal/ConfirmModal";
+import { DataContext } from "../../context/DataProvider";
+import AddVideoModal from "../../components/coursesPageComponents/addVideoModal/AddVideoModal";
+import { title } from "motion/react-client";
+import { Link } from "react-router-dom";
 
 const CoursesList = () => {
-  const courses1 = [
-    {
-      id: 1,
-      instructor: "د. أحمد السعيد",
-      description: "مقدمة في تصميم واجهات المستخدم",
-      image: ui,
-      lang: "ar",
-      videoCount: 12,
-    },
-    {
-      id: 2,
-      instructor: "Dr. John Smith",
-      description: "Data Science Fundamentals",
-      image: ui,
-      lang: "en",
-      videoCount: 15,
-    },
-    {
-      id: 3,
-      instructor: "د. ليلى عبد الرحمن",
-      description: "تطوير التطبيقات باستخدام React",
-      image: ui,
-      lang: "ar",
-      videoCount: 20,
-    },
-    {
-      id: 4,
-      instructor: "Prof. Emily Johnson",
-      description: "Advanced Machine Learning Techniques",
-      image: ui,
-      lang: "en",
-      videoCount: 18,
-    },
-    {
-      id: 5,
-      instructor: "د. سامي القحطاني",
-      description: "إدارة المشاريع التقنية",
-      image: ui,
-      lang: "ar",
-      videoCount: 10,
-    },
-    {
-      id: 6,
-      instructor: "Dr. Michael Brown",
-      description: "Full-Stack Web Development",
-      image: ui,
-      lang: "en",
-      videoCount: 25,
-    },
-    {
-      id: 7,
-      instructor: "د. هند الزهراني",
-      description: "أساسيات تحليل البيانات بلغة Python",
-      image: ui,
-      lang: "ar",
-      videoCount: 14,
-    },
-    {
-      id: 8,
-      instructor: "Prof. Robert Wilson",
-      description: "Cyber Security Essentials",
-      image: ui,
-      lang: "en",
-      videoCount: 16,
-    },
-  ];
-  const [courses, setCourses] = useState([]);
+  const { courses, setCourses, refresh } = useContext(DataContext);
+  const [courseSelected, SetCourseSelected] = useState(null);
+  const [isModalvideoOpen, setIsModalVideoOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
   useEffect(() => {
+    // refresh();
+  }, [courses]);
+  const handleDeleteCourse = (id) => {
     api
-      .get("courses")
-      .then((res) => {
-        console.log(res.data);
-        setCourses(res.data);
+      .delete(`courses/${id}`)
+      .then(() => {
+        console.log("OK");
+        setIsConfirmModalOpen(false);
+        refresh();
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
+
+  const formatDuration = (h, m, s) => {
+    const pad = (val) => String(val).padStart(2, "0");
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  };
+
+  const handleSubmit = (values) => {
+    const { hour_duration, minute_duration, second_duration, ...rest } = values;
+    const formattedDuration = formatDuration(
+      hour_duration,
+      minute_duration,
+      second_duration
+    );
+
+    const payload = {
+      ...rest,
+      duration: formattedDuration,
+    };
+
+    // console.log("Submitted video data:", payload);
+    // console.log("course Selected is", courseSelected);
+    let data = {
+      course_id: courseSelected.id,
+      video_url: payload.url,
+      title: payload.title,
+      description: payload.description,
+      duration: payload.duration,
+      video_order: payload.video_order,
+    };
+    console.log(data);
+    api
+      .post(`courses/${courseSelected.id}/videos`, data)
+      .then((res) => {
+        console.log(res.data);
+        setIsModalVideoOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <StyledCoursesList>
@@ -113,6 +101,9 @@ const CoursesList = () => {
                   <NormalTextPrimaryShared>
                     {course.title}
                   </NormalTextPrimaryShared>
+                  <NormalTextPrimaryShared>
+                    {/* {course.description} */}
+                  </NormalTextPrimaryShared>
                 </CourseInfo>
                 <CourseInfo>
                   <NormalTextPrimaryShared>
@@ -123,16 +114,72 @@ const CoursesList = () => {
               </CourseTitle>
 
               <CourseFooter>
-                <PrimarySharedButton variant="primary">
-                  Details
-                </PrimarySharedButton>
+                <Link to={`/dashboard/courses/${course.id}`}>
+                  <PrimarySharedButton
+                    style={{ width: "fit-content", padding: "2px 8px" }}
+                  >
+                    Show Course
+                  </PrimarySharedButton>
+                </Link>
+                <div className="d-flex align-items-center gap-3">
+                  <CustomBtn
+                    onClick={() => {
+                      SetCourseSelected(course);
+                      setIsModalVideoOpen(true);
+                    }}
+                    $bg="#3b80ff"
+                  >
+                    <AiOutlineAppstoreAdd />
+                  </CustomBtn>
+                  <CustomBtn $bg="#28b628">
+                    <BiMessageSquareEdit />
+                  </CustomBtn>
+                  <CustomBtn
+                    onClick={() => {
+                      setSelectedCourseId(course.id);
+                      setIsConfirmModalOpen(true);
+                    }}
+                    $bg="#ff5050"
+                  >
+                    <MdOutlineDelete />
+                  </CustomBtn>
+                </div>
               </CourseFooter>
             </CourseBody>
           </CourseCard>
         ))}
       </StyledCoursesList>
+      <ConfirmModal
+        isOpen={isConfirmModalOpen}
+        handleOk={() => handleDeleteCourse(selectedCourseId)}
+        onClose={() => setIsConfirmModalOpen(false)}
+      />
+      <AddVideoModal
+        isOpen={isModalvideoOpen}
+        setIsOpen={setIsModalVideoOpen}
+        handleSubmit={handleSubmit}
+      />
     </>
   );
 };
+
+const CustomBtn = styled.button`
+  width: 50px;
+  height: 50px;
+  background-color: ${({ $bg }) => $bg};
+  color: #fff;
+  font-size: var(--normal-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: transparent;
+    color: ${({ $bg }) => $bg};
+    border-color: ${({ $bg }) => $bg};
+  }
+`;
 
 export default CoursesList;

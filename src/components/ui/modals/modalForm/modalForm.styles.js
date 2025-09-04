@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PrimarySharedButton } from "../buttons/PrimaryButton";
+import { PrimarySharedButton } from "../../../common/buttons/PrimaryButton";
 import { motion } from "motion/react";
 
 export const Overlay = styled(motion.div)`

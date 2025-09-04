@@ -1,11 +1,13 @@
 // import React, { useState } from 'react'
 import * as Yup from "yup";
-import ModalForm from "../../common/modalForm/ModalForm";
+import ModalForm from "../../ui/modals/modalForm/ModalForm";
 import { api } from "../../../utils/api/api";
+import { useContext } from "react";
+import { DataContext } from "../../../context/DataProvider";
 
 const AddFieldModal = ({ isOpen, setIsOpen }) => {
   // const [isOpen, setIsOpen] = useState(false);
-
+  const { refresh } = useContext(DataContext);
   const fields = [
     {
       name: "name",
@@ -38,6 +40,7 @@ const AddFieldModal = ({ isOpen, setIsOpen }) => {
     // console.log("القيم المرسلة:", values);
     api.post("categories", values).then((res) => {
       console.log(res);
+      refresh();
       setIsOpen(false);
     });
   };

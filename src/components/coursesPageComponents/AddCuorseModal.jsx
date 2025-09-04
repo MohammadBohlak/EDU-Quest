@@ -1,27 +1,27 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
-import ModalForm from "../common/modalForm/ModalForm";
+import ModalForm from "../ui/modals/modalForm/ModalForm";
 import { api } from "../../utils/api/api";
+import { DataContext } from "../../context/DataProvider";
+import { BiRefresh } from "react-icons/bi";
 
 const AddCourseModal = ({ isOpen, setIsOpen }) => {
-  const [categories, setCategories] = useState([]);
-
+  const { categories, refresh } = useContext(DataContext);
+  const [displayCategories, setDisplayCategories] = useState([]);
   useEffect(() => {
-    api.get("categories").then((res) => {
-      setCategories(
-        res.data.categories.map((e) => {
-          return { value: e.id, label: e.name };
-        })
-      );
-    });
-  }, []);
+    setDisplayCategories(
+      categories.map((e) => {
+        return { value: e.id, label: e.name };
+      })
+    );
+  }, [categories]);
   const fields = [
     {
-      name: "type",
+      name: "category_id",
       label: "Course Type",
       type: "select",
-      options: categories,
+      options: displayCategories,
     },
     {
       name: "title",
@@ -38,20 +38,25 @@ const AddCourseModal = ({ isOpen, setIsOpen }) => {
   ];
 
   const initialValues = {
-    type: "",
+    category_id: "",
     title: "",
     description: "",
   };
 
   const validationSchema = Yup.object({
-    type: Yup.string().required("Please select a course type"),
+    category_id: Yup.string().required("Please select a course type"),
     title: Yup.string().required("Course title is required"),
     description: Yup.string(),
   });
 
   const handleSubmit = (values) => {
-    console.log("Submitted course data:", values);
-    setIsOpen(false);
+    console.log(values);
+    api.post("courses", values).then((res) => {
+      console.log(res);
+      setIsOpen(false);
+      //   getCourses();
+      refresh();
+    });
   };
 
   return (
