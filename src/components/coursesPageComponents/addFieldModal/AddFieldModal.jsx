@@ -30,10 +30,7 @@ const AddFieldModal = ({ isOpen, setIsOpen }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("The field is reaured"),
-    description: Yup.string().min(
-      10,
-      "Description must be longer than 10 characters."
-    ),
+    description: Yup.string().max(100),
   });
 
   const handleSubmit = (values) => {

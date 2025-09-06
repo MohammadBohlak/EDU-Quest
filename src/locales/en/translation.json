@@ -98,17 +98,27 @@
   },
   "signup": {
     "title": "Sign Up",
-    "firstName": "First name",
+    "username": "User name",
     "lastName": "Last name",
     "email": "Email address",
     "password": "Password",
-    "button": "Sign Up"
+    "button": "Sign Up",
+    "requiredUsername": "User name is required",
+    "requiredLastName": "Last name is required",
+    "invalidEmail": "Invalid email address",
+    "requiredEmail": "Email is required",
+    "minPassword": "Password must be at least 6 characters",
+    "requiredPassword": "Password is required"
   },
   "login": {
     "title": "Welcome",
     "subtitle": "Log in to your account to continue",
     "email": "Email address",
     "password": "Password",
-    "button": "Login"
+    "button": "Login",
+    "invalidEmail": "Invalid email address",
+    "requiredEmail": "Email is required",
+    "minPassword": "Password must be at least 6 characters",
+    "requiredPassword": "Password is required"
   }
 }

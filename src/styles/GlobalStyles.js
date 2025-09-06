@@ -18,6 +18,7 @@ export const GlobalStyles = createGlobalStyle`
  
   :root{
     --primary-shared : ${({ theme }) => theme.colors.primaryShared} ; 
+    --muted-shared : ${({ theme }) => theme.colors.backgroundMutedShared} ; 
     --padding-top : 216px ;
     --big-text: 5.2rem ; 
     --normal-text: 2.4rem; 

@@ -55,7 +55,7 @@ export const RightSection = styled.div`
   /* background-color: white; */
 `;
 
-export const StyledForm = styled(Form)`
+export const StyledForm = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundMutedShared};
   width: 100%;
   max-width: 400px;
@@ -80,5 +80,8 @@ export const StyledForm = styled(Form)`
       box-shadow: none;
       border: 1px solid ${({ theme }) => theme.colors.primaryShared};
     }
+  }
+  .invalid-feedback {
+    font-size: var(--min-text);
   }
 `;

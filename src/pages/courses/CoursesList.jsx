@@ -13,7 +13,10 @@ import {
   CourseTitle,
   StyledCoursesList,
 } from "./courses.styles";
-import { NormalTextPrimaryShared } from "../../components/common/texts/NormalText";
+import {
+  NormalTextPrimaryShared,
+  NormalTextShared,
+} from "../../components/common/texts/NormalText";
 import { PrimarySharedButton } from "../../components/common/buttons/PrimaryButton";
 import { api } from "../../utils/api/api";
 import styled from "styled-components";
@@ -22,6 +25,8 @@ import { DataContext } from "../../context/DataProvider";
 import AddVideoModal from "../../components/coursesPageComponents/addVideoModal/AddVideoModal";
 import { title } from "motion/react-client";
 import { Link } from "react-router-dom";
+import EditCourseModal from "../../components/coursesPageComponents/editCourseModal/EditCourseModal";
+import { SmallTextShared } from "../../components/common/texts/SmallText";
 
 const CoursesList = () => {
   const { courses, setCourses, refresh } = useContext(DataContext);
@@ -29,6 +34,7 @@ const CoursesList = () => {
   const [isModalvideoOpen, setIsModalVideoOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [isModalEditCourseOpen, setIsModalEditCourseOpen] = useState(false);
   useEffect(() => {
     // refresh();
   }, [courses]);
@@ -93,19 +99,26 @@ const CoursesList = () => {
             <CourseImage src={ui} alt={course.title} />
             <CourseBody>
               <CourseTitle $lang={course.lang}>
-                <CourseInfo>
+                <CourseInfo className="flex-column align-items-start gap-3">
                   {/* <CircleImg> </CircleImg> */}
                   <NormalTextPrimaryShared>
-                    {/* {course.instructor} */}
+                    {course.publisher_name}
                   </NormalTextPrimaryShared>
-                  <NormalTextPrimaryShared>
+                  <NormalTextPrimaryShared style={{}}>
                     {course.title}
-                  </NormalTextPrimaryShared>
-                  <NormalTextPrimaryShared>
-                    {/* {course.description} */}
                   </NormalTextPrimaryShared>
                 </CourseInfo>
                 <CourseInfo>
+                  <SmallTextShared
+                    style={{
+                      width: "100%",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    {course.description}
+                  </SmallTextShared>
                   <NormalTextPrimaryShared>
                     {/* {course.videoCount} */}
                   </NormalTextPrimaryShared>
@@ -131,9 +144,17 @@ const CoursesList = () => {
                   >
                     <AiOutlineAppstoreAdd />
                   </CustomBtn>
-                  <CustomBtn $bg="#28b628">
-                    <BiMessageSquareEdit />
-                  </CustomBtn>
+                  <Link to={`edit/${course.id}`}>
+                    <CustomBtn
+                      onClick={() => {
+                        SetCourseSelected(course);
+                        setIsModalEditCourseOpen(true);
+                      }}
+                      $bg="#28b628"
+                    >
+                      <BiMessageSquareEdit />
+                    </CustomBtn>
+                  </Link>
                   <CustomBtn
                     onClick={() => {
                       setSelectedCourseId(course.id);
@@ -154,10 +175,12 @@ const CoursesList = () => {
         handleOk={() => handleDeleteCourse(selectedCourseId)}
         onClose={() => setIsConfirmModalOpen(false)}
       />
+
       <AddVideoModal
         isOpen={isModalvideoOpen}
         setIsOpen={setIsModalVideoOpen}
         handleSubmit={handleSubmit}
+        courseSelected={courseSelected}
       />
     </>
   );

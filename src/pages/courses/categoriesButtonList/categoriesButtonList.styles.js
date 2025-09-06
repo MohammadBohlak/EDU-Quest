@@ -10,7 +10,8 @@ export const ButtonScrollContainer = styled(Container)`
   padding: 20px 0px;
   margin-top: 20px;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.colors.backgroundMutedShared};
+  /* background-color: ${({ theme }) => theme.colors.backgroundMutedShared}; */
+  background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 20px;
   /* اختياري: تخصيص شريط التمرير */
   &::-webkit-scrollbar {
@@ -29,9 +30,11 @@ export const ButtonScrollContainer = styled(Container)`
 export const StyledButton = styled(Button)`
   margin: 0px 5px;
   flex: 0 0 auto; /* يحافظ على عرض الزر الثابت */
-  background-color: white;
+  /* background-color: white; */
+  background-color: ${({ theme }) => theme.colors.backgroundSections};
   border-color: white;
-  color: black;
+  /* color: black; */
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-weight: 400;
   font-size: var(--small-text);
   border-radius: 15px;
@@ -39,8 +42,10 @@ export const StyledButton = styled(Button)`
   &.active,
   &:hover,
   &.btn:active {
-    background-color: ${({ theme }) => theme.colors.primaryShared};
-    border-color: ${({ theme }) => theme.colors.primaryShared};
-    color: #fff;
+    /* background-color: ${({ theme }) => theme.colors.backgroundMuted}; */
+    background-color: white;
+    /* border-color: ${({ theme }) => theme.colors.primaryShared}; */
+    border-color: white;
+    color: ${({ theme }) => theme.colors.primaryShared};
   }
 `;

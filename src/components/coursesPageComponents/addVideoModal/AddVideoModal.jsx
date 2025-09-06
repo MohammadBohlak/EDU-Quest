@@ -1,25 +1,49 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import VideoModal from "../../ui/modals/videoModal/VideoModal";
+import { api } from "../../../utils/api/api";
 import * as Yup from "yup";
-import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
-import { NormalTextPrimaryShared } from "../../common/texts/NormalText";
-import { SmallTextShared } from "../../common/texts/SmallText";
-import {
-  CloseButton,
-  ErrorText,
-  FieldWrapper,
-  ModalContainer,
-  Overlay,
-  StyledInput,
-  StyledTextarea,
-  SubmitButton,
-  TimeField,
-  TimeRow,
-} from "./addVideoModal.styles";
 
-// -------------------- Main Component --------------------
-const AddVideoModal = ({ isOpen, setIsOpen, handleSubmit }) => {
+const AddVideoModal = ({ courseSelected, isOpen, setIsOpen }) => {
+  // const [isOpen, setIsOpen] = React.useState(false);
+
+  const formatDuration = (h, m, s) => {
+    const pad = (val) => String(val).padStart(2, "0");
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  };
+
+  const handleSubmit = (values) => {
+    const { hour_duration, minute_duration, second_duration, ...rest } = values;
+    const formattedDuration = formatDuration(
+      hour_duration,
+      minute_duration,
+      second_duration
+    );
+
+    const payload = {
+      ...rest,
+      duration: formattedDuration,
+    };
+
+    let data = {
+      course_id: courseSelected.id,
+      video_url: payload.url,
+      title: payload.title,
+      description: payload.description,
+      duration: payload.duration,
+      video_order: payload.video_order,
+    };
+    console.log(data);
+    api
+      .post(`courses/${courseSelected.id}/videos`, data)
+      .then((res) => {
+        console.log(res.data);
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const initialValues = {
     title: "",
     description: "",
@@ -29,7 +53,6 @@ const AddVideoModal = ({ isOpen, setIsOpen, handleSubmit }) => {
     minute_duration: "",
     second_duration: "",
   };
-
   const validationSchema = Yup.object({
     title: Yup.string().required("Video title is required"),
     description: Yup.string(),
@@ -45,120 +68,19 @@ const AddVideoModal = ({ isOpen, setIsOpen, handleSubmit }) => {
       .typeError("Must be a number")
       .required("Second is required"),
   });
-
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <Overlay onClick={() => setIsOpen(false)}>
-          <ModalContainer
-            onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.3 }}
-          >
-            <CloseButton onClick={() => setIsOpen(false)}>×</CloseButton>
-            <div className="w-100 d-flex justify-content-center">
-              <NormalTextPrimaryShared>
-                Add New Video to Course
-              </NormalTextPrimaryShared>
-            </div>
-
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-            >
-              <Form>
-                {[
-                  {
-                    name: "url",
-                    label: "Video URL",
-                    type: "text",
-                    placeholder: "Enter video URL",
-                  },
-                  {
-                    name: "title",
-                    label: "Video Title",
-                    type: "text",
-                    placeholder: "Enter video title",
-                  },
-                  {
-                    name: "description",
-                    label: "Video Description",
-                    type: "textarea",
-                    placeholder: "Enter a brief description",
-                  },
-                  {
-                    name: "video_order",
-                    label: "Video Order in Course",
-                    type: "text",
-                    placeholder: "e.g. 1 or 2",
-                  },
-                ].map(({ name, label, type, placeholder }) => (
-                  <FieldWrapper key={name}>
-                    <SmallTextShared htmlFor={name}>{label}</SmallTextShared>
-                    {type === "textarea" ? (
-                      <StyledTextarea
-                        as="textarea"
-                        name={name}
-                        placeholder={placeholder}
-                      />
-                    ) : (
-                      <StyledInput
-                        type={type}
-                        name={name}
-                        placeholder={placeholder}
-                      />
-                    )}
-                    <ErrorMessage name={name} component={ErrorText} />
-                  </FieldWrapper>
-                ))}
-
-                {/* Time Inputs in One Row */}
-                <SmallTextShared>
-                  Exercise Appearance Time (during video)
-                </SmallTextShared>
-                <TimeRow>
-                  <TimeField>
-                    <StyledInput
-                      type="number"
-                      name="hour_duration"
-                      placeholder="Hours"
-                    />
-                    <ErrorMessage name="hour_duration" component={ErrorText} />
-                  </TimeField>
-                  <TimeField>
-                    <StyledInput
-                      type="number"
-                      name="minute_duration"
-                      placeholder="Minutes"
-                    />
-                    <ErrorMessage
-                      name="minute_duration"
-                      component={ErrorText}
-                    />
-                  </TimeField>
-                  <TimeField>
-                    <StyledInput
-                      type="number"
-                      name="second_duration"
-                      placeholder="Seconds"
-                    />
-                    <ErrorMessage
-                      name="second_duration"
-                      component={ErrorText}
-                    />
-                  </TimeField>
-                </TimeRow>
-
-                <SubmitButton type="submit">Save Video</SubmitButton>
-              </Form>
-            </Formik>
-          </ModalContainer>
-        </Overlay>
-      )}
-    </AnimatePresence>
+    <div>
+      <VideoModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleSubmit={handleSubmit}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+      />
+    </div>
   );
 };
 

@@ -15,7 +15,7 @@ import {
   Overlay,
   StyledInput,
   StyledSelect,
-  StyledTextarea, // هذه مفترض أنها styled.textarea
+  StyledTextarea,
   SubmitButton,
 } from "./modalForm.styles";
 
@@ -41,7 +41,7 @@ export default function ModalForm({
             initial={{ scale: 1, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5 }} // ← هنا تحدد مدة الأنيميشن بالثواني
             onClick={(e) => e.stopPropagation()}
           >
             <Header>
@@ -56,7 +56,7 @@ export default function ModalForm({
                 actions.setSubmitting(false);
               }}
             >
-              {({ isSubmitting, values, handleChange, handleBlur }) => (
+              {({ isSubmitting }) => (
                 <Form>
                   {fields.map((field, index) => (
                     <FieldWrapper key={index}>
@@ -65,21 +65,17 @@ export default function ModalForm({
                       </SmallTextShared>
 
                       {field.type === "textarea" ? (
-                        // هنا نستخدم textarea عادي مربوط بدوال Formik
-                        <FieldWrapper>
-                          <StyledTextarea
-                            id={field.name}
-                            name={field.name}
-                            rows="4"
-                            placeholder={field.placeholder}
-                            value={values[field.name]}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                          <div style={{ textAlign: "right", fontSize: "12px" }}>
-                            {values[field.name].length}/100
-                          </div>
-                        </FieldWrapper>
+                        <Field
+                          // as="textarea"
+                          id={field.name}
+                          name={field.name}
+                          rows="4"
+                          placeholder={field.placeholder}
+                          component={StyledTextarea}
+                          onChange={(e) => {
+                            console.log(e.target.value);
+                          }}
+                        />
                       ) : field.type === "select" ? (
                         <Field
                           as={StyledSelect}
@@ -88,8 +84,8 @@ export default function ModalForm({
                           component="select"
                         >
                           <option value="">select</option>
-                          {field.options?.map((opt, i) => (
-                            <option key={i} value={opt.value}>
+                          {field.options?.map((opt, index) => (
+                            <option key={index} value={opt.value}>
                               {opt.label}
                             </option>
                           ))}

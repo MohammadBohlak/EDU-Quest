@@ -63,6 +63,9 @@ export const CourseImage = styled(Card.Img)`
 
 export const CourseBody = styled(Card.Body)`
   padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const CircleImg = styled.div`

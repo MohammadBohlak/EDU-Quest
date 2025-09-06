@@ -7,7 +7,7 @@ const DataProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [courses, setCourses] = useState([]);
   const [refreshFlag, setRefreshFlag] = useState(false);
-
+  const [rawCourses, setRawCourses] = useState([]);
   const refresh = () => {
     console.log("refresh");
     setRefreshFlag((prev) => !prev);
@@ -26,6 +26,7 @@ const DataProvider = ({ children }) => {
     try {
       const res = await api.get("courses");
       setCourses(res.data);
+      setRawCourses(res.data);
     } catch (err) {
       console.error(err);
     }
@@ -47,6 +48,7 @@ const DataProvider = ({ children }) => {
         courses,
         setCourses,
         refresh,
+        rawCourses,
       }}
     >
       {children}

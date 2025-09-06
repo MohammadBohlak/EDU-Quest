@@ -16,10 +16,11 @@ import { DataContext } from "../../../context/DataProvider";
 //   "Management",
 // ];
 
-const CategoriesButtonList = ({ courses, setCourses, rawCourses }) => {
+const CategoriesButtonList = () => {
   // الحالة لتخزين المجال النشط
   const [activeCategory, setActiveCategory] = useState([]);
-  const { categories } = useContext(DataContext);
+  const { categories, courses, setCourses, rawCourses } =
+    useContext(DataContext);
 
   const hanldeSelectCategory = (category) => {
     setActiveCategory(category.name);
@@ -30,13 +31,13 @@ const CategoriesButtonList = ({ courses, setCourses, rawCourses }) => {
       /*
      هون لازم تفلتر الكورسات بناءاً على  
      category_id 
+     */
 
       setCourses(
-      courses.filter((course) => {
-        return course.category_id == category.id;
-      })
-    );
-    */
+        rawCourses.filter((course) => {
+          return course.category_id == category.id;
+        })
+      );
     }
   };
   return (

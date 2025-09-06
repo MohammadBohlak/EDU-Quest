@@ -13,7 +13,7 @@ import AboutUs from "./components/homePageComponents/aboutUsSection/AboutUs";
 import Testimonial from "./components/homePageComponents/testimonialSection/Testimonial";
 import Footer from "./components/ui/footer/Footer";
 import SignUp from "./pages/joinPages/SignUp";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/joinPages/Login";
 import Dashboard from "./pages/dashboard/Dashboard";
 import axios from "axios";
@@ -24,6 +24,8 @@ import Loader from "./components/ui/Loader";
 import { api } from "./utils/api/api";
 import Course from "./pages/course/Course";
 import VideoPlayer from "./components/ui/videoPlayer/VideoPlayer";
+import ModalScientificFields from "./components/ui/modals/modalScientificFields/ModalScientificFields";
+import EditCourseModal from "./components/coursesPageComponents/editCourseModal/EditCourseModal";
 const checkYouTubeVideo = async (videoId) => {
   const isFound = await axios
     .get(
@@ -54,6 +56,7 @@ function App() {
   //     });
   // }, []);
   // const lang = useSelector((state) => state.lang.language)
+  const navigate = useNavigate();
   const { i18n } = useTranslation();
   const theme = useSelector((state) => state.theme);
   const isLoading = useSelector((state) => state.loader.isLoading);
@@ -96,6 +99,15 @@ function App() {
               <Route path="courses" element={<Courses />} />
               <Route path="courses/:id" element={<Course />} />
               <Route path="courses/:id/:videoId" element={<VideoPlayer />} />
+              <Route
+                path="courses/edit/:id"
+                element={
+                  <EditCourseModal
+                    isOpen={true}
+                    onClose={() => navigate(`dashboard/courses`)}
+                  />
+                }
+              />
               <Route path="settings" element={<div>settings</div>} />
             </Route>
           </Routes>

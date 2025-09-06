@@ -1,28 +1,26 @@
 import { useContext, useState } from "react";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
-import ModalForm from "../ui/modals/modalForm/ModalForm";
-import { api } from "../../utils/api/api";
-import { DataContext } from "../../context/DataProvider";
+import ModalForm from "../../ui/modals/modalForm/ModalForm";
+import { api } from "../../../utils/api/api";
+import { DataContext } from "../../../context/DataProvider";
 import { BiRefresh } from "react-icons/bi";
 
-const AddCourseModal = ({ isOpen, setIsOpen }) => {
-  const { categories, refresh } = useContext(DataContext);
-  const [displayCategories, setDisplayCategories] = useState([]);
+const EditCourseModal = ({ isOpen, setIsOpen, courseSelected }) => {
+  const [initialValues, setInitialValues] = useState({
+    title: "",
+    description: "",
+  });
+  const { refresh } = useContext(DataContext);
   useEffect(() => {
-    setDisplayCategories(
-      categories.map((e) => {
-        return { value: e.id, label: e.name };
-      })
-    );
-  }, [categories]);
+    console.log(courseSelected);
+    if (isOpen)
+      setInitialValues({
+        title: courseSelected.title,
+        description: courseSelected.description,
+      });
+  }, [courseSelected]);
   const fields = [
-    {
-      name: "category_id",
-      label: "Course Type",
-      type: "select",
-      options: displayCategories,
-    },
     {
       name: "title",
       label: "Course Title",
@@ -37,22 +35,20 @@ const AddCourseModal = ({ isOpen, setIsOpen }) => {
     },
   ];
 
-  const initialValues = {
-    category_id: "",
-    title: "",
-    description: "",
-  };
+  // const initialValues = {
+  //   title: courseTitle,
+  //   description: courseDescription,
+  // };
 
   const validationSchema = Yup.object({
-    category_id: Yup.string().required("Please select a course type"),
     title: Yup.string().required("Course title is required"),
-    description: Yup.string().max(100),
+    description: Yup.string(),
   });
 
   const handleSubmit = (values) => {
     console.log(values);
-    api.post("courses", values).then((res) => {
-      console.log(res);
+    api.put(`courses/${courseSelected.id}`, values).then((res) => {
+      console.log("OK Edit", res);
       setIsOpen(false);
       //   getCourses();
       refresh();
@@ -72,4 +68,4 @@ const AddCourseModal = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default AddCourseModal;
+export default EditCourseModal;
