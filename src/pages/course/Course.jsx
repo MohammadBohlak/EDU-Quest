@@ -114,6 +114,7 @@ const Course = () => {
         refreshVideosList={refreshVideosList}
       />
       <ConfirmModal
+        title={"Are you sure you want to delete this video?"}
         isOpen={isModalDeleteOpen}
         onClose={() => {
           setIsModalDeleteOpen(false);

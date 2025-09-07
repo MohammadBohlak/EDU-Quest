@@ -43,21 +43,22 @@ const SignUp = () => {
 
   const handleSubmit = (values, { setSubmitting }) => {
     console.log(values);
-    // axios
-    //   .post("https://edu-f.onrender.com/api/signup", {
-    //     user_name: values.username,
-    //     email: values.email,
-    //     password: values.password,
-    //   })
-    //   .then((res) => {
-    //     console.log("Signup successful:", res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.error("Signup error:", err);
-    //   })
-    //   .finally(() => {
-    //     setSubmitting(false);
-    //   });
+    axios
+      .post("https://edu-f.onrender.com/api/register", {
+        user_name: values.username,
+        email: values.email,
+        password: values.password,
+        role: "admin",
+      })
+      .then((res) => {
+        console.log("Signup successful:", res.data);
+      })
+      .catch((err) => {
+        console.error("Signup error:", err);
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   };
 
   return (

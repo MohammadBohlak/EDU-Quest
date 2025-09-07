@@ -171,6 +171,7 @@ const CoursesList = () => {
         ))}
       </StyledCoursesList>
       <ConfirmModal
+        title={"Are you sure you want to delete this course?"}
         isOpen={isConfirmModalOpen}
         handleOk={() => handleDeleteCourse(selectedCourseId)}
         onClose={() => setIsConfirmModalOpen(false)}

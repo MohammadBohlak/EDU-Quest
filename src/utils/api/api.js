@@ -9,7 +9,7 @@ export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    Authorization: "Bearer 1|FPrHoqxTYz8k7e6shkgpZXgKzPBZB8jR92mv1vS827031fec",
+    Authorization: "Bearer 2|5qbsdvyz2KbcXfaMu1cSFipPiBrj7g0Xl1wIkjUs87cbb26d",
   },
 });
 

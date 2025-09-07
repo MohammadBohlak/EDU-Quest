@@ -43,7 +43,7 @@ const ModalBtn = styled.button`
   }
 `;
 
-const ConfirmModal = ({ onClose, isOpen, handleOk }) => {
+const ConfirmModal = ({ onClose, isOpen, handleOk, title }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -60,9 +60,7 @@ const ConfirmModal = ({ onClose, isOpen, handleOk }) => {
             transition={{ duration: 0.5 }} // ← هنا تحدد مدة الأنيميشن بالثواني
             onClick={(e) => e.stopPropagation()}
           >
-            <SmallTextShared>
-              Are you sure you want to delete this course?
-            </SmallTextShared>
+            <SmallTextShared>{title}</SmallTextShared>
             <div className="d-flex justify-content-between">
               <ModalBtn
                 onClick={handleOk}

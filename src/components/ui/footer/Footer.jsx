@@ -14,32 +14,41 @@ import {
   TopSection,
 } from "./footer.styles";
 import { useTranslation } from "react-i18next";
-import logo from "../../../assets/images/logo1.png"
+import logo from "../../../assets/images/logo1.png";
 const Footer = () => {
   const { t } = useTranslation();
   return (
     <FooterContainer>
       <>
         <TopSection>
-          <Row className="" style={{ rowGap: "20px", columnGap:"0px" }}>
+          <Row
+            className="justify-content-sm-between"
+            style={{ rowGap: "20px", columnGap: "0px" }}
+          >
             <Col md={12} lg={2}>
               <Logo>
-                <img src={logo} alt="Logo"/>
+                <img src={logo} alt="Logo" />
               </Logo>
             </Col>
             <Col md={6} lg={2}>
               <FooterLinkTitle>{t("footer.quickLinksTitle")}</FooterLinkTitle>
-              <FooterLink href="#hero">{t("footer.quickLinks.home")}</FooterLink>
-              <FooterLink href="#courses">{t("footer.quickLinks.courses")}</FooterLink>
+              <FooterLink href="#hero">
+                {t("footer.quickLinks.home")}
+              </FooterLink>
+              <FooterLink href="#courses">
+                {t("footer.quickLinks.courses")}
+              </FooterLink>
               <FooterLink href="#questions">
                 {t("footer.quickLinks.questions")}
               </FooterLink>
-              <FooterLink href="#about">{t("footer.quickLinks.about")}</FooterLink>
+              <FooterLink href="#about">
+                {t("footer.quickLinks.about")}
+              </FooterLink>
               <FooterLink href="#testimonial">
                 {t("footer.quickLinks.testimonial")}
               </FooterLink>
             </Col>
-            <Col md={6} lg={2}>
+            {/* <Col md={6} lg={2}>
               <FooterLinkTitle>{t("footer.usefulLinksTitle")}</FooterLinkTitle>
               <FooterLink href="#">
                 {t("footer.usefulLinks.privacyPolicy")}
@@ -51,7 +60,7 @@ const Footer = () => {
                 {t("footer.usefulLinks.support")}
               </FooterLink>
               <FooterLink href="#">{t("footer.usefulLinks.faq")}</FooterLink>
-            </Col>
+            </Col> */}
             <Col md={6} lg={2}>
               <FooterLinkTitle>{t("footer.contactTitle")}</FooterLinkTitle>
               <FooterLink href="tel:+963998026793">+963998026793</FooterLink>
@@ -74,16 +83,16 @@ const Footer = () => {
             <Col md={12} className="d-flex align-items-center flex-column">
               <FooterLinkTitle>{t("footer.socialMediaTitle")}</FooterLinkTitle>
               <SocialIcons>
-                <SocialIcon target= "_blank" href="https://www.facebook.com">
+                <SocialIcon target="_blank" href="https://www.facebook.com">
                   <FaFacebookF />
                 </SocialIcon>
-                <SocialIcon target= "_blank" href="https://wa.me/998026793">
+                <SocialIcon target="_blank" href="https://wa.me/998026793">
                   <FaWhatsapp />
                 </SocialIcon>
-                <SocialIcon target= "_blank" href="https://www.linkedin.com">
+                <SocialIcon target="_blank" href="https://www.linkedin.com">
                   <FaLinkedinIn />
                 </SocialIcon>
-                <SocialIcon target= "_blank" href="https://www.instagram.com">
+                <SocialIcon target="_blank" href="https://www.instagram.com">
                   <FaInstagram />
                 </SocialIcon>
               </SocialIcons>

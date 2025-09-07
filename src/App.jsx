@@ -26,6 +26,7 @@ import Course from "./pages/course/Course";
 import VideoPlayer from "./components/ui/videoPlayer/VideoPlayer";
 import ModalScientificFields from "./components/ui/modals/modalScientificFields/ModalScientificFields";
 import EditCourseModal from "./components/coursesPageComponents/editCourseModal/EditCourseModal";
+import Users from "./pages/users/Users";
 const checkYouTubeVideo = async (videoId) => {
   const isFound = await axios
     .get(
@@ -95,7 +96,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<div>dashboard</div>} />
-              <Route path="users" element={<div>users</div>} />
+              <Route path="users" element={<Users />} />
               <Route path="courses" element={<Courses />} />
               <Route path="courses/:id" element={<Course />} />
               <Route path="courses/:id/:videoId" element={<VideoPlayer />} />
