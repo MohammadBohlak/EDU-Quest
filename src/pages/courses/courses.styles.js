@@ -49,6 +49,7 @@ export const CourseCard = styled(Card)`
     theme.colors.backgroundMutedShared || "#f8f9fa"};
   border-radius: 25px;
   padding: 15px;
+  margin: auto;
   &:hover {
     transform: scale(1.02);
   }
@@ -81,8 +82,6 @@ export const CircleImg = styled.div`
 `;
 export const CourseTitle = styled(Card.Title)`
   display: flex;
-  /* justify-content: space-between; */
-  /* align-items: center ; */
   flex-wrap: wrap;
   flex-direction: column;
   row-gap: 10px;
@@ -93,7 +92,6 @@ export const CourseTitle = styled(Card.Title)`
 `;
 export const CourseInfo = styled.div`
   display: flex;
-  /* justify-content: space-between; */
   align-items: center;
   column-gap: 5px;
 `;

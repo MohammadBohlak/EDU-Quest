@@ -30,20 +30,20 @@ import { SmallTextShared } from "../../components/common/texts/SmallText";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-const CoursesList = () => {
-  const { courses, setCourses, refresh } = useContext(DataContext);
+const CoursesList = ({ courses }) => {
+  const { setCourses, refresh } = useContext(DataContext);
   const [courseSelected, SetCourseSelected] = useState(null);
   const [isModalvideoOpen, setIsModalVideoOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [isModalEditCourseOpen, setIsModalEditCourseOpen] = useState(false);
+
   const [user, setUser] = useState({});
   useEffect(() => {
-    // refresh();
-    // console.log(courses);
     const userData = JSON.parse(localStorage.getItem("user"));
     setUser(userData);
   }, [courses]);
+  useEffect(() => {}, []);
   const handleDeleteCourse = (id) => {
     const token = localStorage.getItem("token");
     api
@@ -51,7 +51,6 @@ const CoursesList = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        console.log("OK");
         setIsConfirmModalOpen(false);
         refresh();
       })
@@ -78,8 +77,6 @@ const CoursesList = () => {
       duration: formattedDuration,
     };
 
-    // console.log("Submitted video data:", payload);
-    // console.log("course Selected is", courseSelected);
     let data = {
       course_id: courseSelected.id,
       video_url: payload.url,
@@ -147,15 +144,17 @@ const CoursesList = () => {
                 {(user.name == course.publisher_name ||
                   user.role == "admin") && (
                   <div className="d-flex align-items-center gap-3">
-                    <CustomBtn
-                      onClick={() => {
-                        SetCourseSelected(course);
-                        setIsModalVideoOpen(true);
-                      }}
-                      $bg="#3b80ff"
-                    >
-                      <AiOutlineAppstoreAdd />
-                    </CustomBtn>
+                    {user.name == course.publisher_name && (
+                      <CustomBtn
+                        onClick={() => {
+                          SetCourseSelected(course);
+                          setIsModalVideoOpen(true);
+                        }}
+                        $bg="#3b80ff"
+                      >
+                        <AiOutlineAppstoreAdd />
+                      </CustomBtn>
+                    )}
                     <Link to={`edit/${course.id}`}>
                       <CustomBtn
                         onClick={() => {

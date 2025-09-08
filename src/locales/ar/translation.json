@@ -122,7 +122,8 @@
     "requiredPassword": "كلمة المرور مطلوبة"
   },
   "coursesPage": {
-    "title": "الكورسات",
+    "title": "الدورات",
+    "publishertitle": "دوراتي",
     "add": {
       "scientific": "إضافة مجال علمي",
       "course": "إضافة كورس"

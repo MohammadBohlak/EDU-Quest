@@ -1,15 +1,17 @@
-import { Outlet } from "react-router-dom";
-import React, { use, useEffect } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { NormalTextShared } from "../../components/common/texts/NormalText";
+import { styled } from "styled-components";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import {
+  NormalText,
+  NormalTextShared,
+} from "../../components/common/texts/NormalText";
 import { GiTeacher } from "react-icons/gi";
 import { HiUsers } from "react-icons/hi";
 import { CiLogout } from "react-icons/ci";
-import { IoSettings } from "react-icons/io5";
 import LanguageSwitcher from "../../components/langSwitch/LangSwitch";
 import ThemeSwitch from "../../components/themSwitch/ThemSwitch";
 import {
+  InformationAccount,
   Items,
   Main,
   Sidebar,
@@ -19,10 +21,38 @@ import {
 } from "./dashboard.styles";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import MyContainer from "../../components/ui/myContainer/MyContainer";
+import { FaRegUserCircle } from "react-icons/fa";
+import { api } from "../../utils/api/api";
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const role = useSelector((state) => state.user.user.role);
+  const userName = useSelector((state) => state.user.user.name);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    console.log("logout");
+    const token = localStorage.getItem("token");
+
+    api
+      .post(
+        "logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/");
+      })
+      .catch((err) => {
+        console.error("Logout failed:", err);
+      });
+  };
   useEffect(() => {
     // const user = userData.user;
     console.log(role);
@@ -35,63 +65,111 @@ const Dashboard = () => {
       window.location.href = "unauthorized";
     }
   }, []);
+
   return (
     <StyledDashboard>
-      <SidebarPlace>
-        <Sidebar>
-          <Items>
-            {role === "admin" && (
-              <SidebarItem to="/dashboard/users">
-                <NormalTextShared>
-                  <HiUsers />
-                </NormalTextShared>
-                <NormalTextShared>{t("dashboard.users")}</NormalTextShared>
-              </SidebarItem>
-            )}
-            <SidebarItem to="/dashboard/courses">
-              <NormalTextShared>
-                <GiTeacher />
-              </NormalTextShared>
-              <NormalTextShared>{t("dashboard.courses")}</NormalTextShared>
-            </SidebarItem>
-            <SidebarItem to="/dashboard/myCourses">
-              <NormalTextShared>
-                <GiTeacher />
-              </NormalTextShared>
-              <NormalTextShared style={{ textWrap: "nowrap" }}>
-                {t("dashboard.myCourses")}
-              </NormalTextShared>
-            </SidebarItem>
-            <SidebarItem to="/dashboard/settings">
-              <NormalTextShared>
-                <IoSettings />
-              </NormalTextShared>
-              <NormalTextShared>{t("dashboard.settings")}</NormalTextShared>
-            </SidebarItem>
-          </Items>
-          <div>
-            <SidebarItem
-              onClick={() => {
-                console.log("log out");
-              }}
-            >
-              <NormalTextShared>
-                <CiLogout />
-              </NormalTextShared>
-              <NormalTextShared>{t("dashboard.logout")}</NormalTextShared>
-            </SidebarItem>
-          </div>
-        </Sidebar>
-      </SidebarPlace>
-      <Main>
-        <div className="d-flex gap-4 mb-5 align-items-center justify-content-end">
-          <LanguageSwitcher />
-          <ThemeSwitch />
+      {role === "admin" && (
+        <>
+          <SidebarPlace>
+            <Sidebar>
+              <Items>
+                <SidebarItem to="/dashboard/users">
+                  <NormalTextShared>
+                    <HiUsers />
+                  </NormalTextShared>
+                  <NormalTextShared>{t("dashboard.users")}</NormalTextShared>
+                </SidebarItem>
+
+                <SidebarItem to="/dashboard/courses">
+                  <NormalTextShared>
+                    <GiTeacher />
+                  </NormalTextShared>
+                  <NormalTextShared>{t("dashboard.courses")}</NormalTextShared>
+                </SidebarItem>
+              </Items>
+              <div>
+                <SidebarItem onClick={handleLogout}>
+                  <NormalTextShared>
+                    <CiLogout />
+                  </NormalTextShared>
+                  <NormalTextShared>{t("dashboard.logout")}</NormalTextShared>
+                </SidebarItem>
+              </div>
+            </Sidebar>
+          </SidebarPlace>
+        </>
+      )}
+
+      {role == "admin" ? (
+        <>
+          <Main $isAdmin={role == "admin"}>
+            <div className="d-flex justify-content-between mb-5 align-items-center">
+              <div>
+                <NormalText>
+                  <InformationAccount>
+                    <FaRegUserCircle />
+                    <NormalText>{userName}</NormalText>
+                  </InformationAccount>
+                </NormalText>
+              </div>
+              <div className="d-flex gap-4  align-items-center justify-content-end">
+                <LanguageSwitcher />
+                <ThemeSwitch />
+              </div>
+            </div>
+            <Outlet />
+          </Main>
+        </>
+      ) : (
+        <div style={{ backgroundColor: "var(--back-sections)", width: "100%" }}>
+          <MyContainer>
+            <Main $isAdmin={role == "admin"}>
+              <div className="d-flex justify-content-between mb-5 align-items-center">
+                <div>
+                  <NormalText>
+                    <InformationAccount>
+                      <FaRegUserCircle />
+                      <NormalText>{userName}</NormalText>
+                    </InformationAccount>
+                  </NormalText>
+                </div>
+                <div className="d-flex gap-4  align-items-center justify-content-end">
+                  <LanguageSwitcher />
+                  <ThemeSwitch />
+                </div>
+              </div>
+              <Outlet />
+            </Main>
+          </MyContainer>
         </div>
-        <Outlet />
-      </Main>
+      )}
+      {role == "publisher" && (
+        <LogutBtn onClick={handleLogout}>
+          <div>
+            <CiLogout />
+          </div>
+          <div>{t("dashboard.logout")}</div>
+        </LogutBtn>
+      )}
     </StyledDashboard>
   );
 };
-
+const LogutBtn = styled.button`
+  position: fixed;
+  bottom: 20px;
+  left: 5px;
+  background: red;
+  padding: 5px;
+  color: white;
+  font-size: var(--small-text);
+  font-weight: 400;
+  border: 2px solid red;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+  &:hover {
+    background: white;
+    color: red;
+  }
+`;
 export default Dashboard;

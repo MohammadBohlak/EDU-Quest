@@ -123,6 +123,7 @@
   },
   "coursesPage": {
     "title": "Courses",
+    "publishertitle": "My Courses",
     "add": {
       "scientific": "Add Scientific Field",
       "course": "Add Course"

@@ -38,10 +38,11 @@ export const SidebarPlace = styled.div`
     height: 50px;
     position: fixed;
     z-index: 10;
+    bottom: 0;
   }
 `;
 export const Main = styled.div`
-  width: 80%;
+  width: ${({ $isAdmin }) => ($isAdmin ? "80%" : "100%")};
   padding: 40px;
   min-height: 100vh;
   /* background-color: ${({ theme }) => theme.colors.backgroundMutedShared}; */
@@ -78,4 +79,11 @@ export const Items = styled.div`
     flex-direction: row;
     justify-content: space-between;
   }
+`;
+export const InformationAccount = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--normal-text);
 `;

@@ -1,5 +1,5 @@
 import { AiOutlineDelete } from "react-icons/ai";
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import { FaRegUserCircle } from "react-icons/fa";
 import {
   MainHeading,
@@ -75,16 +75,19 @@ const Courses = () => {
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [srch, setSrch] = useState("");
   const [form, setForm] = useState({ name: "", description: "" });
+  const [displayCourses, setDisplayCourses] = useState([]);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   // const [role, setRole] = useState("admin");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isPublisher, setIsPublisher] = useState(false);
 
   useEffect(() => {
     const userRole = JSON.parse(localStorage.getItem("user")).role;
     // setRole(userRole);
+    setIsPublisher(userRole === "publisher");
     setIsAdmin(userRole === "admin");
-  }, []);
+  }, [courses]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -92,18 +95,34 @@ const Courses = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // api.post("categories").then((res) => {
-    //   console.log(res.data);
-    // });
-    // console.log(form);
   };
   useEffect(() => {
     // getCourses();
     refresh();
   }, []);
   useEffect(() => {
-    setCourses(rawCourses.filter((course) => course.title.includes(srch)));
-  }, [srch]);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (isAdmin)
+      setDisplayCourses(
+        courses.filter((course) => course.title.includes(srch))
+      );
+    else if (isPublisher)
+      setDisplayCourses(
+        courses.filter(
+          (course) =>
+            course.title.includes(srch) &&
+            course.publisher_name == userData.name
+        )
+      );
+  }, [srch, courses, isAdmin, isPublisher]);
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (isAdmin) setDisplayCourses(courses);
+    else if (isPublisher)
+      setDisplayCourses(
+        courses.filter((e) => e.publisher_name == userData.name)
+      );
+  }, [courses, isAdmin, isPublisher]);
   return (
     <StyledCourses>
       <TopCourses>
@@ -114,16 +133,20 @@ const Courses = () => {
             placeholder="Search for courses"
           />
         </InputContainer>
-        <NormalText>
+        {/* <NormalText>
           <InformationAccount>
             <FaRegUserCircle />
             <NormalText>Mohammad_Bohlak</NormalText>
           </InformationAccount>
-        </NormalText>
+        </NormalText> */}
       </TopCourses>
 
-      <MainHeading>{t("coursesPage.title")}</MainHeading>
-
+      {isAdmin && <MainHeading>{t("coursesPage.title")}</MainHeading>}
+      {isPublisher && (
+        <MainHeadingPrimaryShared>
+          {t("coursesPage.publishertitle")}
+        </MainHeadingPrimaryShared>
+      )}
       <div className="d-flex align-items-center gap-5 flex-wrap ">
         {isAdmin && (
           <PrimaryButton
@@ -164,10 +187,7 @@ const Courses = () => {
         courses={courses}
         setCourses={setCourses}
       />
-      <CoursesList
-        //  getCourses={getCourses}
-        courses={courses}
-      />
+      <CoursesList courses={displayCourses} />
 
       {/* extracted modal component */}
       <AddFieldModal
@@ -177,7 +197,6 @@ const Courses = () => {
         form={form}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        // getCourses={getCourses}
       />
       <AddCourseModal
         isOpen={isModalCourseOpen}
@@ -185,7 +204,6 @@ const Courses = () => {
         onClose={() => setIsModalCourseOpen(false)}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        // getCourses={getCourses}
       />
       <ModalScientificFields
         isOpen={isModalDeleteOpen}

@@ -32,7 +32,6 @@ import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
 import { login } from "./store/slices/userSlice";
 import CoursesList from "./pages/courses/CoursesList";
-import MyCourses from "./pages/myCourses/MyCourses";
 const checkYouTubeVideo = async (videoId) => {
   const isFound = await axios
     .get(
@@ -113,7 +112,6 @@ function App() {
               <Route index element={<div>dashboard</div>} />
               <Route path="users" element={<Users />} />
               <Route path="courses" element={<Courses />} />
-              <Route path="myCourses" element={<MyCourses />} />
               <Route path="courses/:id" element={<Course />} />
               <Route path="courses/:id/:videoId" element={<VideoPlayer />} />
               <Route

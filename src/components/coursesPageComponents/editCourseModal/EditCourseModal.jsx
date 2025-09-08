@@ -76,11 +76,18 @@ const EditCourseModal = ({ setIsOpen, courseSelected, onClose }) => {
 
   const handleSubmit = (values) => {
     // console.log(values);
-    api.put(`courses/${id}`, values).then((res) => {
-      setIsShow(false);
-      navigate("/dashboard/courses");
-      refresh();
-    });
+    const token = localStorage.getItem("token");
+    api
+      .put(`courses/${id}`, values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setIsShow(false);
+        navigate("/dashboard/courses");
+        refresh();
+      });
     console.log(values);
   };
 
