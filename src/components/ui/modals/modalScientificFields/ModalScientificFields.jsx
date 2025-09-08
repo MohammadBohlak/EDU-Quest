@@ -9,6 +9,7 @@ import {
 } from "../../../common/texts/SmallText";
 import { api } from "../../../../utils/api/api";
 import { DataContext } from "../../../../context/DataProvider";
+import { useTranslation } from "react-i18next";
 
 const Overlay = styled(motion.div)`
   position: fixed;
@@ -51,7 +52,7 @@ const ModalBtn = styled.button`
 
 const ModalScientificFields = ({ onClose, isOpen }) => {
   const { categories, refresh } = useContext(DataContext);
-
+  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -69,7 +70,7 @@ const ModalScientificFields = ({ onClose, isOpen }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <SmallTextPrimaryShared className="w-100 text-center">
-              Scientific Fields
+              {t("modalScientificFields")}
             </SmallTextPrimaryShared>
             <div className="d-flex flex-column">
               {categories.map(
@@ -79,9 +80,15 @@ const ModalScientificFields = ({ onClose, isOpen }) => {
                       <ModalBtn
                         className="mb-3 w-100"
                         onClick={() => {
+                          const token = localStorage.getItem("token");
                           api
-                            .delete(`categories/${category.id}`)
+                            .delete(`categories/${category.id}`, {
+                              headers: {
+                                Authorization: `Bearer ${token}`,
+                              },
+                            })
                             .then(() => {
+                              onClose();
                               refresh();
                             })
                             .catch((err) => {

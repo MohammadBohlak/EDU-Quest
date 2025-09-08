@@ -1,6 +1,6 @@
 // src/pages/Login.jsx
 
-import React from "react";
+import React, { use } from "react";
 import { useTranslation } from "react-i18next";
 import { Form as BootstrapForm } from "react-bootstrap";
 import { Formik } from "formik";
@@ -17,9 +17,15 @@ import {
   SignUpContainer,
   StyledForm,
 } from "./styles";
+import { api } from "../../utils/api/api";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/userSlice";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -34,13 +40,20 @@ const Login = () => {
   });
 
   const handleSubmit = (values, { setSubmitting }) => {
-    axios
+    api
       .post("https://edu-f.onrender.com/api/login", {
         email: values.email,
         password: values.password,
       })
       .then((res) => {
-        console.log(res.data);
+        const { token, user } = res.data;
+        dispatch(login({ token, user }));
+        if (user.role === "admin" || user.role === "publisher") {
+          if (user.role === "admin") navigate("/dashboard/users");
+          else navigate("/dashboard/courses");
+        } else {
+          navigate("/");
+        }
       })
       .catch((err) => {
         console.error(err);

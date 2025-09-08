@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { NormalTextShared } from "../../components/common/texts/NormalText";
@@ -17,30 +17,48 @@ import {
   SidebarPlace,
   StyledDashboard,
 } from "./dashboard.styles";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
+  const role = useSelector((state) => state.user.user.role);
+  useEffect(() => {
+    // const user = userData.user;
+    console.log(role);
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!token) {
+      window.location.href = "/login";
+    }
+    if (user.role !== "admin" && user.role !== "publisher") {
+      window.location.href = "unauthorized";
+    }
+  }, []);
   return (
     <StyledDashboard>
       <SidebarPlace>
         <Sidebar>
           <Items>
-            <SidebarItem to="/dashboard/users">
-              <NormalTextShared>
-                <HiUsers />
-              </NormalTextShared>
-              <NormalTextShared>Users</NormalTextShared>
-            </SidebarItem>
+            {role === "admin" && (
+              <SidebarItem to="/dashboard/users">
+                <NormalTextShared>
+                  <HiUsers />
+                </NormalTextShared>
+                <NormalTextShared>{t("dashboard.users")}</NormalTextShared>
+              </SidebarItem>
+            )}
             <SidebarItem to="/dashboard/courses">
               <NormalTextShared>
                 <GiTeacher />
               </NormalTextShared>
-              <NormalTextShared>Courses</NormalTextShared>
+              <NormalTextShared>{t("dashboard.courses")}</NormalTextShared>
             </SidebarItem>
             <SidebarItem to="/dashboard/settings">
               <NormalTextShared>
                 <IoSettings />
               </NormalTextShared>
-              <NormalTextShared>Settings</NormalTextShared>
+              <NormalTextShared>{t("dashboard.settings")}</NormalTextShared>
             </SidebarItem>
           </Items>
           <div>
@@ -52,7 +70,7 @@ const Dashboard = () => {
               <NormalTextShared>
                 <CiLogout />
               </NormalTextShared>
-              <NormalTextShared>Logout</NormalTextShared>
+              <NormalTextShared>{t("dashboard.logout")}</NormalTextShared>
             </SidebarItem>
           </div>
         </Sidebar>

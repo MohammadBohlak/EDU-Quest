@@ -120,5 +120,69 @@
     "requiredEmail": "Email is required",
     "minPassword": "Password must be at least 6 characters",
     "requiredPassword": "Password is required"
+  },
+  "coursesPage": {
+    "title": "Courses",
+    "add": {
+      "scientific": "Add Scientific Field",
+      "course": "Add Course"
+    },
+    "removeScientific": "Remove Scientific Field"
+  },
+  "addField": {
+    "title": "Add Scientific Field",
+    "name": "Name",
+    "description": "Description",
+    "placeholderName": "Enter the title",
+    "placeholderDescription": "Enter the description",
+    "requiredName": "Name is required",
+    "maxDescription": "Description must be at most 100 characters"
+  },
+
+  "addCourse": {
+    "title": "Add New Course",
+    "category": "Course Type",
+    "titleLabel": "Course Title",
+    "description": "Course Description",
+    "placeholderTitle": "Enter the course title",
+    "placeholderDescription": "Enter a brief description",
+    "requiredCategory": "Please select a course type",
+    "requiredTitle": "Course title is required",
+    "maxDescription": "Description must be at most 100 characters"
+  },
+  "modalScientificFields": "Scientific Fields",
+  "coursesList": {
+    "showCourse": "Show Course",
+    "confirmMessage": "Are you sure you want to delete this course?"
+  },
+  "unauthorized": {
+    "title": "Access Denied",
+    "message": "You are not authorized to view this page.",
+    "goHome": "Go to Home",
+    "goBack": "Go Back"
+  },
+  "notFound": {
+    "title": "404 - Page Not Found",
+    "message": "The page you’re looking for doesn’t exist or has been moved.",
+    "goHome": "Go to Home"
+  },
+  "dashboard": {
+    "users": "Users",
+    "courses": "Courses",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "usersTable": {
+    "searchPlaceholder": "Search by username…",
+    "filterAll": "All roles",
+    "filterAdmin": "Admin",
+    "filterPublisher": "Publisher",
+    "filterStudent": "Student",
+    "username": "Username",
+    "email": "Email",
+    "role": "Role",
+    "actions": "Actions",
+    "deleteAll": "Delete All",
+    "confirmDelete": "Are you sure you want to delete this user?"
   }
 }

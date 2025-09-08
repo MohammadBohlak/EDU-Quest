@@ -120,5 +120,68 @@
     "requiredEmail": "البريد الإلكتروني مطلوب",
     "minPassword": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
     "requiredPassword": "كلمة المرور مطلوبة"
+  },
+  "coursesPage": {
+    "title": "الكورسات",
+    "add": {
+      "scientific": "إضافة مجال علمي",
+      "course": "إضافة كورس"
+    },
+    "removeScientific": "حذف مجال علمي"
+  },
+  "addField": {
+    "title": "إضافة مجال علمي",
+    "name": "الاسم",
+    "description": "الوصف",
+    "placeholderName": "أدخل العنوان",
+    "placeholderDescription": "أدخل الوصف",
+    "requiredName": "الاسم مطلوب",
+    "maxDescription": "يجب ألا يزيد الوصف عن 100 حرف"
+  },
+  "addCourse": {
+    "title": "إضافة دورة جديدة",
+    "category": "نوع الدورة",
+    "titleLabel": "عنوان الدورة",
+    "description": "وصف الدورة",
+    "placeholderTitle": "أدخل عنوان الدورة",
+    "placeholderDescription": "أدخل وصفًا مختصرًا",
+    "requiredCategory": "يرجى اختيار نوع الدورة",
+    "requiredTitle": "عنوان الدورة مطلوب",
+    "maxDescription": "يجب ألا يزيد الوصف عن 100 حرف"
+  },
+  "modalScientificFields": "المجالات العلمية",
+  "coursesList": {
+    "showCourse": "عرض الكورس",
+    "confirmMessage": "هل أنت متأكد من أنك تريد حذف هذا الكورس؟"
+  },
+  "unauthorized": {
+    "title": "تم رفض الوصول",
+    "message": "ليس لديك صلاحية لعرض هذه الصفحة.",
+    "goHome": "العودة إلى الصفحة الرئيسية",
+    "goBack": "الرجوع للخلف"
+  },
+  "notFound": {
+    "title": "٤٠٤ - الصفحة غير موجودة",
+    "message": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "goHome": "العودة إلى الصفحة الرئيسية"
+  },
+  "dashboard": {
+    "users": "المستخدمون",
+    "courses": "الدورات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "usersTable": {
+    "searchPlaceholder": "ابحث باسم المستخدم…",
+    "filterAll": "جميع الأدوار",
+    "filterAdmin": "مدير",
+    "filterPublisher": "ناشر",
+    "filterStudent": "طالب",
+    "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "role": "الدور",
+    "actions": "الإجراءات",
+    "deleteAll": "حذف الكل",
+    "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟"
   }
 }

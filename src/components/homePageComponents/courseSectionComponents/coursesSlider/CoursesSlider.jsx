@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,74 +23,75 @@ import {
 } from "../../../common/texts/NormalText";
 import { SmallTextShared } from "../../../common/texts/SmallText";
 import { PrimarySharedButton } from "../../../common/buttons/PrimaryButton";
+import { DataContext } from "../../../../context/DataProvider";
 
 // مصفوفة ثابتة للكورسات، يمكن تعديلها لاحقاً لتصبح بيانات من السيرفر
-const courses = [
-  {
-    id: 1,
-    instructor: "د. أحمد السعيد",
-    description: "مقدمة في تصميم واجهات المستخدم",
-    image: ui,
-    lang: "ar",
-    videoCount: 12,
-  },
-  {
-    id: 2,
-    instructor: "Dr. John Smith",
-    description: "Data Science Fundamentals",
-    image: ui,
-    lang: "en",
-    videoCount: 15,
-  },
-  {
-    id: 3,
-    instructor: "د. ليلى عبد الرحمن",
-    description: "تطوير التطبيقات باستخدام React",
-    image: ui,
-    lang: "ar",
-    videoCount: 20,
-  },
-  {
-    id: 4,
-    instructor: "Prof. Emily Johnson",
-    description: "Advanced Machine Learning Techniques",
-    image: ui,
-    lang: "en",
-    videoCount: 18,
-  },
-  {
-    id: 5,
-    instructor: "د. سامي القحطاني",
-    description: "إدارة المشاريع التقنية",
-    image: ui,
-    lang: "ar",
-    videoCount: 10,
-  },
-  {
-    id: 6,
-    instructor: "Dr. Michael Brown",
-    description: "Full-Stack Web Development",
-    image: ui,
-    lang: "en",
-    videoCount: 25,
-  },
-  {
-    id: 7,
-    instructor: "د. هند الزهراني",
-    description: "أساسيات تحليل البيانات بلغة Python",
-    image: ui,
-    lang: "ar",
-    videoCount: 14,
-  },
-  {
-    id: 8,
-    instructor: "Prof. Robert Wilson",
-    description: "Cyber Security Essentials",
-    image: ui,
-    lang: "en",
-    videoCount: 16,
-  },
-];
+// const courses = [
+//   {
+//     id: 1,
+//     instructor: "د. أحمد السعيد",
+//     description: "مقدمة في تصميم واجهات المستخدم",
+//     image: ui,
+//     lang: "ar",
+//     videoCount: 12,
+//   },
+//   {
+//     id: 2,
+//     instructor: "Dr. John Smith",
+//     description: "Data Science Fundamentals",
+//     image: ui,
+//     lang: "en",
+//     videoCount: 15,
+//   },
+//   {
+//     id: 3,
+//     instructor: "د. ليلى عبد الرحمن",
+//     description: "تطوير التطبيقات باستخدام React",
+//     image: ui,
+//     lang: "ar",
+//     videoCount: 20,
+//   },
+//   {
+//     id: 4,
+//     instructor: "Prof. Emily Johnson",
+//     description: "Advanced Machine Learning Techniques",
+//     image: ui,
+//     lang: "en",
+//     videoCount: 18,
+//   },
+//   {
+//     id: 5,
+//     instructor: "د. سامي القحطاني",
+//     description: "إدارة المشاريع التقنية",
+//     image: ui,
+//     lang: "ar",
+//     videoCount: 10,
+//   },
+//   {
+//     id: 6,
+//     instructor: "Dr. Michael Brown",
+//     description: "Full-Stack Web Development",
+//     image: ui,
+//     lang: "en",
+//     videoCount: 25,
+//   },
+//   {
+//     id: 7,
+//     instructor: "د. هند الزهراني",
+//     description: "أساسيات تحليل البيانات بلغة Python",
+//     image: ui,
+//     lang: "ar",
+//     videoCount: 14,
+//   },
+//   {
+//     id: 8,
+//     instructor: "Prof. Robert Wilson",
+//     description: "Cyber Security Essentials",
+//     image: ui,
+//     lang: "en",
+//     videoCount: 16,
+//   },
+// ];
 
 // دالة لتقسيم المصفوفة إلى chunks
 const chunkArray = (array, chunkSize) => {
@@ -103,6 +104,8 @@ const chunkArray = (array, chunkSize) => {
 
 // مكون الـ CoursesSlider
 const CoursesSlider = () => {
+  const { courses } = useContext(DataContext);
+
   // state لتتبع حجم الشاشة
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -135,6 +138,7 @@ const CoursesSlider = () => {
       return '<span class="' + className + '">' + (index + 1) + "</span>";
     },
   };
+
   return (
     <StyledSwiperContainer>
       <Swiper
@@ -158,24 +162,20 @@ const CoursesSlider = () => {
             >
               {group.map((course) => (
                 <CourseCard key={course.id}>
-                  <CourseImage
-                    variant="top"
-                    src={course.image}
-                    alt={course.title}
-                  />
+                  <CourseImage variant="top" src={ui} alt={course.title} />
                   <CourseBody>
                     <CourseTitle $lang={course.lang}>
                       <CourseInfo>
-                        <CircleImg> </CircleImg>
+                        {/* <CircleImg> </CircleImg> */}
                         <NormalTextPrimaryShared>
-                          {course.instructor}
+                          {course.publisher_name}
                         </NormalTextPrimaryShared>
                       </CourseInfo>
                       <CourseInfo>
                         <NormalTextPrimaryShared>
                           {course.videoCount}
                         </NormalTextPrimaryShared>
-                        <NormalTextShared>Videos</NormalTextShared>
+                        {/* <NormalTextShared>Videos</NormalTextShared> */}
                       </CourseInfo>
                     </CourseTitle>
 
@@ -183,10 +183,10 @@ const CoursesSlider = () => {
                       <SmallTextShared>{course.description}</SmallTextShared>
                     </Card.Text>
                     <CourseFooter>
-                      <NormalTextShared>150k</NormalTextShared>
-                      <PrimarySharedButton variant="primary">
+                      {/* <NormalTextShared>150k</NormalTextShared> */}
+                      {/* <PrimarySharedButton variant="primary">
                         Details
-                      </PrimarySharedButton>
+                      </PrimarySharedButton> */}
                     </CourseFooter>
                   </CourseBody>
                 </CourseCard>

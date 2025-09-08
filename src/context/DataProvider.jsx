@@ -9,7 +9,7 @@ const DataProvider = ({ children }) => {
   const [refreshFlag, setRefreshFlag] = useState(false);
   const [rawCourses, setRawCourses] = useState([]);
   const refresh = () => {
-    console.log("refresh");
+    // console.log("refresh");
     setRefreshFlag((prev) => !prev);
   };
 

@@ -45,6 +45,7 @@ import VideoPlayer from "../../components/ui/videoPlayer/VideoPlayer";
 import EditCourseModal from "../../components/coursesPageComponents/editCourseModal/EditCourseModal";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const CustomBtn = styled.button`
   width: 50px;
@@ -66,6 +67,7 @@ const CustomBtn = styled.button`
 `;
 
 const Courses = () => {
+  const { t } = useTranslation();
   const { courses, setCourses, refresh, rawCourses } = useContext(DataContext);
   // const [rawCourses, setRawCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,7 +77,14 @@ const Courses = () => {
   const [form, setForm] = useState({ name: "", description: "" });
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  // const [role, setRole] = useState("admin");
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  useEffect(() => {
+    const userRole = JSON.parse(localStorage.getItem("user")).role;
+    // setRole(userRole);
+    setIsAdmin(userRole === "admin");
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -113,34 +122,41 @@ const Courses = () => {
         </NormalText>
       </TopCourses>
 
-      <MainHeading>Courses</MainHeading>
+      <MainHeading>{t("coursesPage.title")}</MainHeading>
 
       <div className="d-flex align-items-center gap-5 flex-wrap ">
-        <PrimaryButton
-          style={{ width: "fit-content", height: "42px", padding: "9px 27px" }}
-          onClick={openModal}
-        >
-          <IoIosAddCircleOutline /> Add Scientific Field
-        </PrimaryButton>
-
-        <PrimaryButton
-          onClick={() => setIsModalCourseOpen(true)}
-          style={{ width: "fit-content", height: "42px", padding: "9px 27px" }}
-        >
-          <IoIosAddCircleOutline /> Add Course
-        </PrimaryButton>
-        <div className="w-100">
+        {isAdmin && (
           <PrimaryButton
-            onClick={() => setIsModalDeleteOpen(true)}
             style={{
               width: "fit-content",
               height: "42px",
               padding: "9px 27px",
             }}
+            onClick={openModal}
           >
-            <AiOutlineDelete /> Remove Scientific Field
+            <IoIosAddCircleOutline /> {t("coursesPage.add.scientific")}
           </PrimaryButton>
-        </div>
+        )}
+        <PrimaryButton
+          onClick={() => setIsModalCourseOpen(true)}
+          style={{ width: "fit-content", height: "42px", padding: "9px 27px" }}
+        >
+          <IoIosAddCircleOutline /> {t("coursesPage.add.course")}
+        </PrimaryButton>
+        {isAdmin && (
+          <div className="w-100">
+            <PrimaryButton
+              onClick={() => setIsModalDeleteOpen(true)}
+              style={{
+                width: "fit-content",
+                height: "42px",
+                padding: "9px 27px",
+              }}
+            >
+              <AiOutlineDelete /> {t("coursesPage.removeScientific")}
+            </PrimaryButton>
+          </div>
+        )}
       </div>
 
       <CategoriesButtonList

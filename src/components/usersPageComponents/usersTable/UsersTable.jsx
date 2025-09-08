@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
@@ -19,6 +20,7 @@ import ConfirmModal from "../../ui/modals/confirmModal/ConfirmModal";
 import { Table } from "react-bootstrap";
 import PrimaryButton from "../../common/buttons/PrimaryButton";
 import { AnimatePresence, motion } from "motion/react";
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -71,6 +73,9 @@ const StyledTable = styled(Table)`
   /* border-collapse: collapse; */
   z-index: 1;
   position: relative;
+  th {
+    text-align: ${({ theme }) => (theme.lang === "ar" ? "right" : "left")};
+  }
   th,
   td {
     /* background-color: #f4f4f4ad; */
@@ -166,10 +171,17 @@ export default function UsersTable() {
   const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [reloadUsers, setReloadUsers] = useState(false);
+  const { t } = useTranslation();
   // fetch users once
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    // console.log("reloadUsers", reloadUsers);
     api
-      .get("/users")
+      .get("/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         // assume res.data is array of user objects
         setUsers(res.data);
@@ -217,9 +229,14 @@ export default function UsersTable() {
   };
 
   const handleDelete = () => {
-    console.log("Delete user:", userIdToDelete);
+    const token = localStorage.getItem("token");
+
     api
-      .delete(`/users/${userIdToDelete}`)
+      .delete(`/users/${userIdToDelete}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         // assume res.data is array of user objects
         // setUsers(res.data);
@@ -232,6 +249,29 @@ export default function UsersTable() {
     setReloadUsers((p) => !p);
   };
 
+  const deleteAll = async () => {
+    const token = localStorage.getItem("token");
+
+    try {
+      await Promise.all(
+        selectedUsers.map((userId) =>
+          api.delete(`/users/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        )
+      );
+
+      // بعد الحذف، نقوم بتحديث القائمة
+      setSelectedUsers([]);
+      setReloadUsers((prev) => !prev);
+      // console.log("All selected users deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting users:", error);
+    }
+  };
+
   const allSelected =
     filtered.length > 0 && selectedUsers.length === filtered.length;
 
@@ -240,7 +280,7 @@ export default function UsersTable() {
       <Controls>
         <SearchInput
           type="text"
-          placeholder="Search by username…"
+          placeholder={t("usersTable.searchPlaceholder")}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -249,10 +289,10 @@ export default function UsersTable() {
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
         >
-          <option value="">All roles</option>
-          <option value="admin">Admin</option>
-          <option value="publisher">Publisher</option>
-          <option value="student">Student</option>
+          <option value="">{t("usersTable.filterAll")}</option>
+          <option value="admin">{t("usersTable.filterAdmin")}</option>
+          <option value="publisher">{t("usersTable.filterPublisher")}</option>
+          <option value="student">{t("usersTable.filterStudent")}</option>
         </FilterSelect>
         <AnimatePresence>
           {selectedUsers.length > 0 && (
@@ -261,8 +301,9 @@ export default function UsersTable() {
               animate={{ y: "1%", opacity: 1 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               exit={{ y: "100%", opacity: 0 }}
+              onClick={deleteAll}
             >
-              Delete All ({selectedUsers.length})
+              {t("usersTable.deleteAll")} ({selectedUsers.length})
             </DelBtn>
           )}
         </AnimatePresence>
@@ -279,16 +320,16 @@ export default function UsersTable() {
               />
             </Th>
             <Th>
-              <NormalTextShared>Username</NormalTextShared>
+              <NormalTextShared>{t("usersTable.username")}</NormalTextShared>
             </Th>
             <Th>
-              <NormalTextShared>Email</NormalTextShared>
+              <NormalTextShared>{t("usersTable.email")}</NormalTextShared>
             </Th>
             <Th>
-              <NormalTextShared>Role</NormalTextShared>
+              <NormalTextShared>{t("usersTable.role")}</NormalTextShared>
             </Th>
             <Th>
-              <NormalTextShared>Actions</NormalTextShared>
+              <NormalTextShared>{t("usersTable.actions")}</NormalTextShared>
             </Th>
           </tr>
         </thead>
@@ -332,7 +373,7 @@ export default function UsersTable() {
         </tbody>
       </StyledTable>
       <ConfirmModal
-        title={"Are you sure you want to delete this user?"}
+        title={t("usersTable.confirmDelete")}
         isOpen={showConfirmModal}
         onClose={() => {
           setShowConfirmModal(false);

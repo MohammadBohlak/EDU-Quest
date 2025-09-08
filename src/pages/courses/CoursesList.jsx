@@ -27,6 +27,7 @@ import { title } from "motion/react-client";
 import { Link } from "react-router-dom";
 import EditCourseModal from "../../components/coursesPageComponents/editCourseModal/EditCourseModal";
 import { SmallTextShared } from "../../components/common/texts/SmallText";
+import { useTranslation } from "react-i18next";
 
 const CoursesList = () => {
   const { courses, setCourses, refresh } = useContext(DataContext);
@@ -90,7 +91,7 @@ const CoursesList = () => {
         console.log(err);
       });
   };
-
+  const { t } = useTranslation();
   return (
     <>
       <StyledCoursesList>
@@ -131,7 +132,7 @@ const CoursesList = () => {
                   <PrimarySharedButton
                     style={{ width: "fit-content", padding: "2px 8px" }}
                   >
-                    Show Course
+                    {t("coursesList.showCourse")}
                   </PrimarySharedButton>
                 </Link>
                 <div className="d-flex align-items-center gap-3">
@@ -171,7 +172,7 @@ const CoursesList = () => {
         ))}
       </StyledCoursesList>
       <ConfirmModal
-        title={"Are you sure you want to delete this course?"}
+        title={t("coursesList.confirmMessage")}
         isOpen={isConfirmModalOpen}
         handleOk={() => handleDeleteCourse(selectedCourseId)}
         onClose={() => setIsConfirmModalOpen(false)}

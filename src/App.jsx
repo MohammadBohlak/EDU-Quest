@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./styles/themes";
@@ -27,6 +28,9 @@ import VideoPlayer from "./components/ui/videoPlayer/VideoPlayer";
 import ModalScientificFields from "./components/ui/modals/modalScientificFields/ModalScientificFields";
 import EditCourseModal from "./components/coursesPageComponents/editCourseModal/EditCourseModal";
 import Users from "./pages/users/Users";
+import Unauthorized from "./pages/Unauthorized";
+import NotFound from "./pages/NotFound";
+import { login } from "./store/slices/userSlice";
 const checkYouTubeVideo = async (videoId) => {
   const isFound = await axios
     .get(
@@ -62,7 +66,16 @@ function App() {
   const theme = useSelector((state) => state.theme);
   const isLoading = useSelector((state) => state.loader.isLoading);
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (token && user) {
+      dispatch(login({ token, user }));
+    }
+  }, []);
   return (
     <div dir={direction}>
       <ThemeProvider
@@ -109,8 +122,11 @@ function App() {
                   />
                 }
               />
+              {/* <Unauthorized/> */}
               <Route path="settings" element={<div>settings</div>} />
             </Route>
+            <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </DataProvider>
       </ThemeProvider>
