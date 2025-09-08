@@ -27,14 +27,19 @@ const EditCourseModal = ({ setIsOpen, courseSelected, onClose }) => {
     //     description: course.description,
     //   });
     // }
-    api.get(`courses/${id}`).then((res) => {
-      setInitialValues({
-        title: res.data.title,
-        description: res.data.description,
+    const token = localStorage.getItem("token");
+    api
+      .get(`courses/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setInitialValues({
+          title: res.data.title,
+          description: res.data.description,
+        });
+        setIsShow(true);
+        // console.log(res.data);
       });
-      setIsShow(true);
-      // console.log(res.data);
-    });
   }, [id]);
   // useEffect(() => {
   // console.log(courseSelected);

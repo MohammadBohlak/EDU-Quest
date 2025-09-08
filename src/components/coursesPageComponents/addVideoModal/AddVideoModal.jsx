@@ -32,9 +32,12 @@ const AddVideoModal = ({ courseSelected, isOpen, setIsOpen }) => {
       duration: payload.duration,
       video_order: payload.video_order,
     };
-    console.log(data);
+    // console.log(data);
+    const token = localStorage.getItem("token");
     api
-      .post(`courses/${courseSelected.id}/videos`, data)
+      .post(`courses/${courseSelected.id}/videos`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log(res.data);
         setIsOpen(false);

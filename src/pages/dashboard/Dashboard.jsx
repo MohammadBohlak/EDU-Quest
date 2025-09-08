@@ -54,6 +54,14 @@ const Dashboard = () => {
               </NormalTextShared>
               <NormalTextShared>{t("dashboard.courses")}</NormalTextShared>
             </SidebarItem>
+            <SidebarItem to="/dashboard/myCourses">
+              <NormalTextShared>
+                <GiTeacher />
+              </NormalTextShared>
+              <NormalTextShared style={{ textWrap: "nowrap" }}>
+                {t("dashboard.myCourses")}
+              </NormalTextShared>
+            </SidebarItem>
             <SidebarItem to="/dashboard/settings">
               <NormalTextShared>
                 <IoSettings />

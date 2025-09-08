@@ -32,9 +32,14 @@ const VideoPlayer = ({ url }) => {
   const hasStoppedRef = useRef(false); // لمنع التكرار
 
   useEffect(() => {
-    api.get(`videos/${videoId}`).then((res) => {
-      setVideoIdentifier(extractYouTubeVideoId(res.data.video_url));
-    });
+    const token = localStorage.getItem("token");
+    api
+      .get(`videos/${videoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setVideoIdentifier(extractYouTubeVideoId(res.data.video_url));
+      });
   }, []);
 
   const opts = {

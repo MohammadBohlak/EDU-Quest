@@ -12,7 +12,7 @@ import {
   CourseInfo,
   CourseTitle,
   StyledCoursesList,
-} from "./courses.styles";
+} from "../courses/courses.styles";
 import {
   NormalTextPrimaryShared,
   NormalTextShared,
@@ -29,20 +29,25 @@ import EditCourseModal from "../../components/coursesPageComponents/editCourseMo
 import { SmallTextShared } from "../../components/common/texts/SmallText";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+// import { StyledCoursesList } from "../courses/courses.styles";
 
-const CoursesList = () => {
+const MyCourses = () => {
   const { courses, setCourses, refresh } = useContext(DataContext);
   const [courseSelected, SetCourseSelected] = useState(null);
   const [isModalvideoOpen, setIsModalVideoOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [isModalEditCourseOpen, setIsModalEditCourseOpen] = useState(false);
+  const [coursesDisplayed, setCoursesDisplayed] = useState([]);
   const [user, setUser] = useState({});
   useEffect(() => {
     // refresh();
     // console.log(courses);
     const userData = JSON.parse(localStorage.getItem("user"));
     setUser(userData);
+    setCoursesDisplayed(
+      courses.filter((e) => e.publisher_name == userData.name)
+    );
   }, [courses]);
   const handleDeleteCourse = (id) => {
     const token = localStorage.getItem("token");
@@ -103,7 +108,7 @@ const CoursesList = () => {
   return (
     <>
       <StyledCoursesList>
-        {courses.map((course) => (
+        {coursesDisplayed.map((course) => (
           <CourseCard key={course.id}>
             <CourseImage src={ui} alt={course.title} />
             <CourseBody>
@@ -221,4 +226,4 @@ const CustomBtn = styled.button`
   }
 `;
 
-export default CoursesList;
+export default MyCourses;

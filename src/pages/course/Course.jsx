@@ -1,16 +1,15 @@
-import { styled } from "styled-components";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../../utils/api/api";
-import { Button, Card } from "react-bootstrap";
-import img from "../../assets/images/ui.png";
-import { PrimarySharedButton } from "../../components/common/buttons/PrimaryButton";
 import { NormalTextPrimaryShared } from "../../components/common/texts/NormalText";
 import { SmallTextShared } from "../../components/common/texts/SmallText";
 import EditModalForm from "../../components/coursesPageComponents/editVideoModal/EditVideoModal";
 import { BiMessageSquareEdit } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
 import ConfirmModal from "../../components/ui/modals/confirmModal/ConfirmModal";
+import { useTranslation } from "react-i18next";
+import { CardImage, CustomBtn, ShowBtn, StyledVideos } from "./course.styles";
+import { Card } from "react-bootstrap";
 const Course = () => {
   const { id } = useParams();
   const [videos, setVideos] = useState([]);
@@ -19,6 +18,7 @@ const Course = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [refreshVideos, setRefreshVideos] = useState(true);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const { t } = useTranslation();
   const refreshVideosList = () => {
     setRefreshVideos((prev) => !prev);
   };
@@ -41,9 +41,12 @@ const Course = () => {
   console.log(videos);
 
   const handleOk = () => {
-    console.log("ok", videoToDeleteId);
+    const token = localStorage.getItem("token");
+    // console.log("ok", videoToDeleteId);
     api
-      .delete(`videos/${videoToDeleteId}`)
+      .delete(`videos/${videoToDeleteId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log(res.data);
         setIsModalDeleteOpen(false);
@@ -99,7 +102,7 @@ const Course = () => {
                     width: "fit-content",
                   }}
                 >
-                  Watch Video
+                  {t("coursePage.watch")}
                 </ShowBtn>
               </Link>
             </div>
@@ -114,7 +117,7 @@ const Course = () => {
         refreshVideosList={refreshVideosList}
       />
       <ConfirmModal
-        title={"Are you sure you want to delete this video?"}
+        title={t("coursePage.confirmDelete")}
         isOpen={isModalDeleteOpen}
         onClose={() => {
           setIsModalDeleteOpen(false);
@@ -124,70 +127,5 @@ const Course = () => {
     </StyledVideos>
   );
 };
-const CustomBtn = styled.button`
-  width: 50px;
-  height: 50px;
-  background-color: ${({ $bg }) => $bg};
-  color: #fff;
-  font-size: var(--normal-text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid transparent;
-  border-radius: 8px;
 
-  &:hover {
-    background-color: transparent;
-    color: ${({ $bg }) => $bg};
-    border-color: ${({ $bg }) => $bg};
-  }
-`;
-
-const StyledVideos = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 100%;
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-`;
-const CardImage = styled.div`
-  height: 200px;
-  background-image: url(${img});
-  background-size: 100% 100%;
-  position: relative;
-  overflow: hidden;
-  span {
-    position: absolute;
-    width: 200px;
-    height: 50px;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--normal-text);
-    color: var(--primary-shared);
-    font-weight: bold;
-    rotate: -45deg;
-    top: 00%;
-    left: 0%;
-    transform: translate(-29%, -69%);
-  }
-`;
-const ShowBtn = styled(Button)`
-  background-color: var(--primary-shared);
-  border-color: var(--primary-shared);
-  font-size: var(--small-text);
-  border-width: 2px;
-  height: 50px;
-  &:hover {
-    background-color: white;
-    color: var(--primary-shared);
-    border-color: var(--primary-shared);
-  }
-`;
 export default Course;

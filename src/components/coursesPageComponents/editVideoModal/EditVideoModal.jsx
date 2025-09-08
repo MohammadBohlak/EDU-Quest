@@ -26,24 +26,31 @@ export default function EditModalForm({
 
   // جلب بيانات الفيديو من API وتهيئة الحقول
   useEffect(() => {
+    const token = localStorage.getItem("token");
     if (isOpen && videoToEditId) {
-      api.get(`videos/${videoToEditId}`).then((res) => {
-        const { title, description, video_url, video_order, duration } =
-          res.data;
-        // duration بالنمط "hh:mm:ss"
-        const [hour, minute, second] = duration.split(":");
+      api
+        .get(`videos/${videoToEditId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          const { title, description, video_url, video_order, duration } =
+            res.data;
+          // duration بالنمط "hh:mm:ss"
+          const [hour, minute, second] = duration.split(":");
 
-        setInitialValues({
-          title: title || "",
-          description: description || "",
-          url: video_url || "",
-          video_order: String(video_order || ""),
-          hour_duration: hour || "00",
-          minute_duration: minute || "00",
-          second_duration: second || "00",
+          setInitialValues({
+            title: title || "",
+            description: description || "",
+            url: video_url || "",
+            video_order: String(video_order || ""),
+            hour_duration: hour || "00",
+            minute_duration: minute || "00",
+            second_duration: second || "00",
+          });
+          setShow(true);
         });
-        setShow(true);
-      });
     }
   }, [isOpen, videoToEditId]);
 
@@ -88,9 +95,14 @@ export default function EditModalForm({
       video_order: rest.video_order,
     };
 
-    console.log("Update payload:", payload);
+    // console.log("Update payload:", payload);
+    const token = localStorage.getItem("token");
     api
-      .put(`videos/${videoToEditId}`, payload)
+      .put(`videos/${videoToEditId}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log("Edited successfully", res.data);
         setIsOpen(false);

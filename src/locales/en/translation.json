@@ -169,6 +169,7 @@
   "dashboard": {
     "users": "Users",
     "courses": "Courses",
+    "myCourses": "My Courses",
     "settings": "Settings",
     "logout": "Logout"
   },
@@ -184,5 +185,9 @@
     "actions": "Actions",
     "deleteAll": "Delete All",
     "confirmDelete": "Are you sure you want to delete this user?"
+  },
+  "coursePage": {
+    "watch": "Watch Video",
+    "confirmDelete": "Are you sure you want to delete this video?"
   }
 }
