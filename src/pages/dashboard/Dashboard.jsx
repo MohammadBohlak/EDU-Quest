@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import {
   NormalText,
@@ -13,27 +13,29 @@ import ThemeSwitch from "../../components/themSwitch/ThemSwitch";
 import {
   InformationAccount,
   Items,
+  LogutBtn,
   Main,
   Sidebar,
   SidebarItem,
   SidebarPlace,
   StyledDashboard,
 } from "./dashboard.styles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import MyContainer from "../../components/ui/myContainer/MyContainer";
 import { FaRegUserCircle } from "react-icons/fa";
 import { api } from "../../utils/api/api";
+import { logout } from "../../store/slices/userSlice";
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const role = useSelector((state) => state.user.user.role);
   const userName = useSelector((state) => state.user.user.name);
   const navigate = useNavigate();
+  const userID = useSelector((s) => s.user.user.id);
+  const dispatch = useDispatch();
   const handleLogout = () => {
-    console.log("logout");
     const token = localStorage.getItem("token");
-
     api
       .post(
         "logout",
@@ -45,12 +47,8 @@ const Dashboard = () => {
         }
       )
       .then((res) => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
         navigate("/");
-      })
-      .catch((err) => {
-        console.error("Logout failed:", err);
+        dispatch(logout());
       });
   };
   useEffect(() => {
@@ -108,7 +106,9 @@ const Dashboard = () => {
                 <NormalText>
                   <InformationAccount>
                     <FaRegUserCircle />
+                    {/* <Link to={`/profile/${userID}`}> */}
                     <NormalText>{userName}</NormalText>
+                    {/* </Link> */}
                   </InformationAccount>
                 </NormalText>
               </div>
@@ -154,22 +154,5 @@ const Dashboard = () => {
     </StyledDashboard>
   );
 };
-const LogutBtn = styled.button`
-  position: fixed;
-  bottom: 20px;
-  left: 5px;
-  background: red;
-  padding: 5px;
-  color: white;
-  font-size: var(--small-text);
-  font-weight: 400;
-  border: 2px solid red;
-  border-radius: 5px;
-  display: flex;
-  gap: 5px;
-  &:hover {
-    background: white;
-    color: red;
-  }
-`;
+
 export default Dashboard;

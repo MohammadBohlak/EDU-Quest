@@ -1,11 +1,8 @@
-// src/pages/Login.jsx
-
-import React, { use } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form as BootstrapForm } from "react-bootstrap";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 
 import back from "../../assets/images/loginBack.png";
 import { MainHeading } from "../../components/common/texts/MainHeading";
@@ -21,11 +18,16 @@ import { api } from "../../utils/api/api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/userSlice";
+import Toast from "../../components/ui/toast/Toast";
+import { changeLanguage } from "../../store/slices/languageSlice";
+// import { changeLanguage } from "i18next";
 
 const Login = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [message, setMessage] = useState();
+  const [showToast, setShowToast] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -46,7 +48,13 @@ const Login = () => {
         password: values.password,
       })
       .then((res) => {
+        console.log(res.data);
         const { token, user } = res.data;
+        const lang = user.language;
+        const darK_mode = user.darK_mode;
+        localStorage.setItem("language", lang);
+        localStorage.setItem("darK_mode", darK_mode);
+        dispatch(changeLanguage(lang));
         dispatch(login({ token, user }));
         if (user.role === "admin" || user.role === "publisher") {
           if (user.role === "admin") navigate("/dashboard/users");
@@ -56,16 +64,20 @@ const Login = () => {
         }
       })
       .catch((err) => {
-        console.error(err);
+        setMessage(err.response.data.message);
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 5000);
       })
       .finally(() => {
         setSubmitting(false);
       });
-    // console.log(values);
   };
 
   return (
     <SignUpContainer>
+      <Toast $err={true} message={message} show={showToast} />
       <LeftSection>
         <img className="img1" src={back} alt="background" />
         <img className="img2" src={back} alt="background" />

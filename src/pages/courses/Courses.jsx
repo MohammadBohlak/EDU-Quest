@@ -133,12 +133,6 @@ const Courses = () => {
             placeholder="Search for courses"
           />
         </InputContainer>
-        {/* <NormalText>
-          <InformationAccount>
-            <FaRegUserCircle />
-            <NormalText>Mohammad_Bohlak</NormalText>
-          </InformationAccount>
-        </NormalText> */}
       </TopCourses>
 
       {isAdmin && <MainHeading>{t("coursesPage.title")}</MainHeading>}

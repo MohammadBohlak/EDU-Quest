@@ -190,5 +190,41 @@
   "coursePage": {
     "watch": "Watch Video",
     "confirmDelete": "Are you sure you want to delete this video?"
+  },
+
+  "addUserModal": {
+    "title": "Create New User",
+    "fields": {
+      "user_name": {
+        "label": "User Name",
+        "placeholder": "Enter username",
+        "required": "User name is required"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Email",
+        "required": "Email is required",
+        "invalid": "Email is incorrect"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Password",
+        "required": "Password is required",
+        "min": "Please enter a password of at least 8 characters"
+      },
+      "role": {
+        "label": "Role",
+        "required": "Please select a role for user",
+        "options": {
+          "admin": "Admin",
+          "publisher": "Publisher",
+          "student": "Student"
+        }
+      }
+    }
+  },
+  "modalForm": {
+    "select": "Select",
+    "submit": "Submit"
   }
 }

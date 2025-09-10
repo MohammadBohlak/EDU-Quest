@@ -1,6 +1,6 @@
-// src/pages/SignUp.jsx
+import { useNavigate } from "react-router-dom";
 
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form as BootstrapForm } from "react-bootstrap";
 import back from "../../assets/images/loginBack.png";
@@ -14,11 +14,17 @@ import {
 } from "./styles";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/userSlice";
+import { api } from "../../utils/api/api";
+import Toast from "../../components/ui/toast/Toast";
 
 const SignUp = () => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [message, setMessage] = useState();
+  const [showToast, setShowToast] = useState(false);
   const initialValues = {
     username: "",
     email: "",
@@ -42,8 +48,7 @@ const SignUp = () => {
   });
 
   const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
-    axios
+    api
       .post("https://edu-f.onrender.com/api/register", {
         user_name: values.username,
         email: values.email,
@@ -51,10 +56,21 @@ const SignUp = () => {
         role: "admin",
       })
       .then((res) => {
-        console.log("Signup successful:", res.data);
+        const { token, user } = res.data;
+        dispatch(login({ token, user }));
+        if (user.role === "admin" || user.role === "publisher") {
+          if (user.role === "admin") navigate("/dashboard/users");
+          else navigate("/dashboard/courses");
+        } else {
+          navigate("/");
+        }
       })
       .catch((err) => {
-        console.error("Signup error:", err);
+        setMessage(err.response.data.message);
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 5000);
       })
       .finally(() => {
         setSubmitting(false);
@@ -63,6 +79,14 @@ const SignUp = () => {
 
   return (
     <SignUpContainer>
+      <Toast
+        $err={true}
+        message={message}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        show={showToast}
+      />
       <LeftSection>
         <img className="img1" src={back} alt="background" />
         <img className="img2" src={back} alt="background" />

@@ -18,6 +18,7 @@ import {
   StyledTextarea, // هذه مفترض أنها styled.textarea
   SubmitButton,
 } from "./modalForm.styles";
+import { useTranslation } from "react-i18next";
 
 export default function ModalForm({
   isOpen,
@@ -28,6 +29,7 @@ export default function ModalForm({
   validationSchema,
   onSubmit,
 }) {
+  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -87,7 +89,7 @@ export default function ModalForm({
                           name={field.name}
                           component="select"
                         >
-                          <option value="">select</option>
+                          <option value="">{t("modalForm.select")}</option>
                           {field.options?.map((opt, i) => (
                             <option key={i} value={opt.value}>
                               {opt.label}
@@ -115,7 +117,7 @@ export default function ModalForm({
                     disabled={isSubmitting}
                     as={PrimarySharedButton}
                   >
-                    Submit
+                    {t("modalForm.submit")}
                   </SubmitButton>
                 </Form>
               )}

@@ -1,18 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import i18n from "../../i18n"; // استيراد i18next لتحديث اللغة فورًا
 
-// الحالة الابتدائية (اللغة الافتراضية هي الإنجليزية)
 const initialState = {
-  language: "en",
+  language: localStorage.getItem("language") || "en", // تحميل اللغة من التخزين المحلي
 };
 
 const languageSlice = createSlice({
   name: "language",
   initialState,
   reducers: {
-    changeLanguage: (state) => {
-      state.language = state.language === "en" ? "ar" : "en"; // تبديل اللغة بين العربية والإنجليزية فقط
-      i18n.changeLanguage(state.language); // تحديث اللغة في i18next
+    changeLanguage: (state, action) => {
+      const newLang = action.payload;
+      state.language = newLang;
+      i18n.changeLanguage(newLang); // تحديث اللغة في i18next
+      localStorage.setItem("language", newLang); // حفظ اللغة في التخزين المحلي
     },
   },
 });

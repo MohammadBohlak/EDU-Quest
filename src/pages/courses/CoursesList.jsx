@@ -105,8 +105,7 @@ const CoursesList = ({ courses }) => {
             <CourseImage src={ui} alt={course.title} />
             <CourseBody>
               <CourseTitle $lang={course.lang}>
-                <CourseInfo className="flex-column align-items-start gap-3">
-                  {/* <CircleImg> </CircleImg> */}
+                <CourseInfo className="flex-column align-items-start  gap-3">
                   <NormalTextPrimaryShared>
                     {course.publisher_name}
                   </NormalTextPrimaryShared>
@@ -125,10 +124,6 @@ const CoursesList = ({ courses }) => {
                   >
                     {course.description}
                   </SmallTextShared>
-                  <NormalTextPrimaryShared>
-                    {/* {course.videoCount} */}
-                  </NormalTextPrimaryShared>
-                  {/* <NormalTextShared>Videos</NormalTextShared> */}
                 </CourseInfo>
               </CourseTitle>
 

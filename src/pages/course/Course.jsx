@@ -19,10 +19,10 @@ const Course = () => {
   const [refreshVideos, setRefreshVideos] = useState(true);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const { t } = useTranslation();
+  const [user, setUser] = useState(null);
   const refreshVideosList = () => {
     setRefreshVideos((prev) => !prev);
   };
-  console.log(id);
   useEffect(() => {
     api
       .get(`courses/${id}`)
@@ -38,6 +38,10 @@ const Course = () => {
         console.log(err);
       });
   }, [refreshVideos]);
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setUser(userData);
+  }, []);
   console.log(videos);
 
   const handleOk = () => {
@@ -76,26 +80,28 @@ const Course = () => {
               </SmallTextShared>
             </Card.Text>
             <div className="d-flex justify-content-between align-items-center">
-              <div className="d-flex align-items-center gap-3">
-                <CustomBtn
-                  onClick={() => {
-                    setVideoToEditId(video.id);
-                    setIsOpen(true);
-                  }}
-                  $bg="#28b628"
-                >
-                  <BiMessageSquareEdit />
-                </CustomBtn>
-                <CustomBtn
-                  onClick={() => {
-                    setIsModalDeleteOpen(true);
-                    setVideoToDeleteId(video.id);
-                  }}
-                  $bg="#ff5050"
-                >
-                  <MdOutlineDelete />
-                </CustomBtn>
-              </div>
+              {(user.role == "admin" || user.role == "publisher") && (
+                <div className="d-flex align-items-center gap-3">
+                  <CustomBtn
+                    onClick={() => {
+                      setVideoToEditId(video.id);
+                      setIsOpen(true);
+                    }}
+                    $bg="#28b628"
+                  >
+                    <BiMessageSquareEdit />
+                  </CustomBtn>
+                  <CustomBtn
+                    onClick={() => {
+                      setIsModalDeleteOpen(true);
+                      setVideoToDeleteId(video.id);
+                    }}
+                    $bg="#ff5050"
+                  >
+                    <MdOutlineDelete />
+                  </CustomBtn>
+                </div>
+              )}
               <Link to={`${video.id}`}>
                 <ShowBtn
                   style={{

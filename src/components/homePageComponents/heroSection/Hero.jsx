@@ -16,9 +16,16 @@ import {
 import man from "../../../assets/images/man.png";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 export default function Hero() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [user, setUser] = useState(localStorage.getItem("user"));
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  useEffect(() => {
+    setUser(user);
+  }, []);
   return (
     <HeroSection id="hero">
       <MyContainer>
@@ -33,28 +40,28 @@ export default function Hero() {
             </NormalTextSecondary>
             <Buttons>
               <PrimaryButton>{t("hero.startCourseButton")}</PrimaryButton>
-              <SecondaryButton
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
-                {t("hero.loginButton")}
-              </SecondaryButton>
+              {!isAuthenticated && (
+                <SecondaryButton
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  {t("hero.loginButton")}
+                </SecondaryButton>
+              )}
             </Buttons>
-            <NormalTextSecondary
-            // onClick={() => {
-            //   // navigate("/signup");
-            // }}
-            >
-              {t("hero.notAccount")}
-              <Link
-                to="/signup"
-                style={{ textDecoration: "underline", color: "#007BFF" }}
-              >
-                {" "}
-                {t("hero.signUp")}
-              </Link>
-            </NormalTextSecondary>
+            {!isAuthenticated && (
+              <NormalTextSecondary>
+                {t("hero.notAccount")}
+                <Link
+                  to="/signup"
+                  style={{ textDecoration: "underline", color: "#007BFF" }}
+                >
+                  {" "}
+                  {t("hero.signUp")}
+                </Link>
+              </NormalTextSecondary>
+            )}
           </LeftHero>
 
           <RighttHero md={12} xl={6}>

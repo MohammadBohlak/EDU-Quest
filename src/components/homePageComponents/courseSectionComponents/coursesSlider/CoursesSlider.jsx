@@ -24,6 +24,9 @@ import {
 import { SmallTextShared } from "../../../common/texts/SmallText";
 import { PrimarySharedButton } from "../../../common/buttons/PrimaryButton";
 import { DataContext } from "../../../../context/DataProvider";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 // مصفوفة ثابتة للكورسات، يمكن تعديلها لاحقاً لتصبح بيانات من السيرفر
 // const courses = [
@@ -105,6 +108,8 @@ const chunkArray = (array, chunkSize) => {
 // مكون الـ CoursesSlider
 const CoursesSlider = () => {
   const { courses } = useContext(DataContext);
+  const { t } = useTranslation();
+  const isAuthenticated = useSelector((s) => s.user.isAuthenticated);
 
   // state لتتبع حجم الشاشة
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -131,7 +136,6 @@ const CoursesSlider = () => {
   const groupedCourses = chunkArray(courses, chunkSize);
   // حساب عدد الصفوف (ثابتة حسب تجزئة الشريحة؛ إذا كانت الشريحة غير مكتملة سنظل نستخدم نفس grid-template)
   const rows = chunkSize / columns;
-
   const pagination = {
     clickable: true,
     renderBullet: function (index, className) {
@@ -164,31 +168,29 @@ const CoursesSlider = () => {
                 <CourseCard key={course.id}>
                   <CourseImage variant="top" src={ui} alt={course.title} />
                   <CourseBody>
-                    <CourseTitle $lang={course.lang}>
+                    <CourseTitle>
                       <CourseInfo>
-                        {/* <CircleImg> </CircleImg> */}
                         <NormalTextPrimaryShared>
                           {course.publisher_name}
                         </NormalTextPrimaryShared>
-                      </CourseInfo>
-                      <CourseInfo>
-                        <NormalTextPrimaryShared>
-                          {course.videoCount}
-                        </NormalTextPrimaryShared>
-                        {/* <NormalTextShared>Videos</NormalTextShared> */}
                       </CourseInfo>
                     </CourseTitle>
 
                     <Card.Text>
                       <SmallTextShared>{course.description}</SmallTextShared>
                     </Card.Text>
-                    <CourseFooter>
-                      {/* <NormalTextShared>150k</NormalTextShared> */}
-                      {/* <PrimarySharedButton variant="primary">
-                        Details
-                      </PrimarySharedButton> */}
-                    </CourseFooter>
                   </CourseBody>
+                  <CourseFooter>
+                    {isAuthenticated && (
+                      <Link to={`/courses/${course.id}`}>
+                        <PrimarySharedButton
+                          style={{ width: "fit-content", padding: "2px 8px" }}
+                        >
+                          {t("coursesList.showCourse")}
+                        </PrimarySharedButton>
+                      </Link>
+                    )}
+                  </CourseFooter>
                 </CourseCard>
               ))}
             </div>

@@ -22,7 +22,7 @@ export const RighttHero = styled(Col)`
   max-width: 95%;
   display: flex;
   justify-content: flex-end;
-  @media (max-width: 1200px){
+  @media (max-width: 1200px) {
     justify-content: center;
   }
   position: relative;

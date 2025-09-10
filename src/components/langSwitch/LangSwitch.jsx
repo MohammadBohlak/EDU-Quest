@@ -4,7 +4,8 @@ import arFlag from "../../assets/images/ar.png";
 import enFlag from "../../assets/images/en.png";
 import { useTranslation } from "react-i18next";
 import { changeLanguage } from "../../store/slices/languageSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { api } from "../../utils/api/api";
 
 const SwitchWrapper = styled.button`
   display: grid;
@@ -46,24 +47,47 @@ const LanguageText = styled.div`
 `;
 
 const LanguageSwitcher = () => {
-  const [language, setLanguage] = useState("ar");
+  // const [language, setLanguage] = useState("en");
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
-
+  const currentLang = useSelector((state) => state.lang.language);
   // دالة التبديل بين اللغتين
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "ar" ? "en" : "ar"));
-    i18n.changeLanguage(language);
-    dispatch(changeLanguage());
+    const newLang = currentLang === "ar" ? "en" : "ar";
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (token && user) {
+      const userId = user.id;
+      api
+        .put(
+          `users/${userId}`,
+          { language: newLang },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          const updatedLang = res.data.user.language;
+          i18n.changeLanguage(updatedLang);
+          dispatch(changeLanguage(updatedLang));
+        });
+    } else {
+      i18n.changeLanguage(newLang);
+      dispatch(changeLanguage(newLang));
+    }
   };
 
   return (
     <SwitchWrapper onClick={toggleLanguage}>
       <Flag>
-        <img src={language === "ar" ? arFlag : enFlag} alt="Flag" />
+        <img src={currentLang === "en" ? arFlag : enFlag} alt="Flag" />
       </Flag>
 
-      <LanguageText>{language === "ar" ? "العربية" : "English"}</LanguageText>
+      <LanguageText>
+        {currentLang === "en" ? "العربية" : "English"}
+      </LanguageText>
     </SwitchWrapper>
   );
 };

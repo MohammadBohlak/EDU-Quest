@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { api } from "../../utils/api/api";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   isAuthenticated: false,
@@ -23,6 +25,10 @@ const userSlice = createSlice({
       localStorage.setItem("user", JSON.stringify(state.user));
     },
     logout(state) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("language");
+      localStorage.removeItem("darK_mode");
       state.isAuthenticated = false;
       state.token = null;
       state.user = {
@@ -31,8 +37,6 @@ const userSlice = createSlice({
         email: "",
         role: "",
       };
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
     },
     updateUser(state, action) {
       state.user = { ...state.user, ...action.payload };

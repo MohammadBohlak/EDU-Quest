@@ -18,7 +18,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/joinPages/Login";
 import Dashboard from "./pages/dashboard/Dashboard";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Courses from "./pages/courses/Courses";
 import DataProvider from "./context/DataProvider";
 import Loader from "./components/ui/Loader";
@@ -30,8 +30,12 @@ import EditCourseModal from "./components/coursesPageComponents/editCourseModal/
 import Users from "./pages/users/Users";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
-import { login } from "./store/slices/userSlice";
+import { login, logout } from "./store/slices/userSlice";
 import CoursesList from "./pages/courses/CoursesList";
+import MyContainer from "./components/ui/myContainer/MyContainer";
+import { LogutBtn } from "./pages/dashboard/dashboard.styles";
+import { CiLogout } from "react-icons/ci";
+import ProfileModal from "./components/ui/modals/profileModal/ProfileModal";
 const checkYouTubeVideo = async (videoId) => {
   const isFound = await axios
     .get(
@@ -49,34 +53,48 @@ const checkYouTubeVideo = async (videoId) => {
 };
 
 function App() {
-  // https://www.youtube.com/watch?v=dQw4w9WgXcQ
-  // console.log(checkYouTubeVideo("dQw4w9WgXcQ"));
-  // useEffect(() => {
-  //   axios
-  //     .post("https://edu-f.onrender.com/api/login", {
-  //       email: "mohammed@gmail.com",
-  //       password: 12345678,
-  //     })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     });
-  // }, []);
-  // const lang = useSelector((state) => state.lang.language)
   const navigate = useNavigate();
   const { i18n } = useTranslation();
   const theme = useSelector((state) => state.theme);
   const isLoading = useSelector((state) => state.loader.isLoading);
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const dispatch = useDispatch();
-
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const isAuthenticated = useSelector((s) => s.user.isAuthenticated);
+  // const dispatch = useDispatch();
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = JSON.parse(localStorage.getItem("user"));
-
+    // const token = localStorage.getItem("token");
+    // const user = JSON.parse(localStorage.getItem("user"));
     if (token && user) {
       dispatch(login({ token, user }));
     }
   }, []);
+  const { t } = useTranslation();
+  const handleLogout = () => {
+    const token = localStorage.getItem("token");
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+
+    api
+      .post(
+        "logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        dispatch(logout());
+
+        // navigate("/");
+      })
+      .catch((err) => {
+        console.error("Logout failed:", err);
+      });
+  };
   return (
     <div dir={direction}>
       <ThemeProvider
@@ -103,11 +121,37 @@ function App() {
                   <AboutUs />
                   <Testimonial />
                   <Footer />
+                  {isAuthenticated && (
+                    <LogutBtn
+                      onClick={() => {
+                        handleLogout();
+                        // window.location.reload();
+                      }}
+                    >
+                      <div>
+                        <CiLogout />
+                      </div>
+                      <div>{t("dashboard.logout")}</div>
+                    </LogutBtn>
+                  )}
                 </>
               }
             />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route
+              path="/courses/:id"
+              element={
+                <div className="mt-5">
+                  <MyContainer>
+                    <Course />
+                  </MyContainer>
+                </div>
+              }
+            />
+            <Route path="/courses/:id/:videoId" element={<VideoPlayer />} />
+            <Route path="/profile/:id" element={<ProfileModal />} />
+
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<div>dashboard</div>} />
               <Route path="users" element={<Users />} />

@@ -87,3 +87,22 @@ export const InformationAccount = styled.div`
   gap: 10px;
   font-size: var(--normal-text);
 `;
+export const LogutBtn = styled.button`
+  position: fixed;
+  bottom: 20px;
+  left: 5px;
+  background: red;
+  padding: 5px;
+  color: white;
+  font-size: var(--small-text);
+  font-weight: 400;
+  border: 2px solid red;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+  z-index: 10;
+  &:hover {
+    background: white;
+    color: red;
+  }
+`;

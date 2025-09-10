@@ -1,168 +1,24 @@
 import { useTranslation } from "react-i18next";
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { useState, useEffect } from "react";
 import { api } from "../../../utils/api/api";
-import {
-  SmallText,
-  SmallTextSecondary,
-  SmallTextShared,
-} from "../../common/texts/SmallText";
-import {
-  NormalText,
-  NormalTextPrimaryShared,
-  NormalTextSecondary,
-  NormalTextShared,
-} from "../../common/texts/NormalText";
-import { BiMessageSquareEdit } from "react-icons/bi";
+import { SmallTextShared } from "../../common/texts/SmallText";
+import { NormalTextShared } from "../../common/texts/NormalText";
 import { MdOutlineDelete } from "react-icons/md";
 import ConfirmModal from "../../ui/modals/confirmModal/ConfirmModal";
-import { Table } from "react-bootstrap";
-import PrimaryButton from "../../common/buttons/PrimaryButton";
-import { AnimatePresence, motion } from "motion/react";
-import { useSelector } from "react-redux";
+import { AnimatePresence } from "motion/react";
+import {
+  Controls,
+  CustomBtn,
+  DelBtn,
+  FilterSelect,
+  InputCheck,
+  SearchInput,
+  StyledTable,
+  Th,
+  Wrapper,
+} from "./usersTable.styles";
 
-const Wrapper = styled.div`
-  width: 100%;
-  select,
-  input {
-    height: 40px;
-    border: none;
-    outline: none;
-    font-size: var(--min-text);
-    border: 1px solid transparent;
-
-    &::placeholder {
-      color: ${({ theme }) => theme.colors.textMuted};
-    }
-    &:focus {
-      outline: none;
-      box-shadow: none;
-      border: 1px solid ${({ theme }) => theme.colors.primaryShared};
-    }
-  }
-`;
-
-const Controls = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-`;
-
-const SearchInput = styled.input`
-  padding: 10px;
-  border: 1px solid #ccc;
-  height: 40px;
-  font-size: var(--min-text);
-  border-radius: 8px;
-`;
-
-const FilterSelect = styled.select`
-  padding: 10px;
-  border: 1px solid #ccc;
-  font-size: var(--min-text);
-  border-radius: 8px;
-  height: 40px;
-`;
-
-const StyledTable = styled(Table)`
-  /* width: 100%; */
-  /* border-collapse: collapse; */
-  z-index: 1;
-  position: relative;
-  th {
-    text-align: ${({ theme }) => (theme.lang === "ar" ? "right" : "left")};
-  }
-  th,
-  td {
-    /* background-color: #f4f4f4ad; */
-    background-color: #f4f4f48e;
-    vertical-align: middle;
-    /* text-align: center; */
-  }
-  td {
-    position: relative;
-    &:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      /* background-color: ${({ theme }) => theme.colors.primary}; */
-      background-color: blue;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-
-      pointer-events: none;
-    }
-  }
-  .selected td {
-    &:before {
-      opacity: 0.2;
-      z-index: 1;
-      pointer-events: initial;
-    }
-  }
-`;
-
-const Th = styled.th`
-  text-align: left;
-  padding: 0.6rem;
-`;
-
-const CustomBtn = styled.button`
-  background-color: ${({ $bg }) => $bg};
-  color: #fff;
-  height: 100%;
-  font-size: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  &:hover {
-    background-color: transparent;
-    color: ${({ $bg }) => $bg};
-    border-color: ${({ $bg }) => $bg};
-  }
-  svg {
-  }
-`;
-const InputCheck = styled.input`
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  accent-color: ${({ theme }) => theme.colors.primaryShared};
-  position: relative;
-  z-index: 1;
-`;
-const DelBtn = styled(motion.div)`
-  height: 40px;
-  width: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.textTheme};
-  transition: color 0.3s;
-  font-size: var(--small-text);
-  padding: 2px 15px;
-  background-color: #ff5050;
-  border-radius: 8px;
-  position: absolute;
-  right: ${({ theme }) => (theme.lang == "en" ? "0" : "auto")};
-  left: ${({ theme }) => (theme.lang === "en" ? "auto" : "0")};
-  @media (max-width: 768px) {
-    height: 40px;
-    padding: 2px 7px;
-    width: 87px;
-    font-size: var(--min-text);
-  }
-`;
-export default function UsersTable() {
+export default function UsersTable({ reloadUsers, setReloadUsers }) {
   const [users, setUsers] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -170,7 +26,7 @@ export default function UsersTable() {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [userIdToDelete, setUserIdToDelete] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [reloadUsers, setReloadUsers] = useState(false);
+  // const [reloadUsers, setReloadUsers] = useState(false);
   const { t } = useTranslation();
   // fetch users once
   useEffect(() => {
@@ -359,8 +215,6 @@ export default function UsersTable() {
                     onClick={() => {
                       setUserIdToDelete(u.id);
                       setShowConfirmModal(true);
-                      // setSelectedCourseId(course.id);
-                      // setIsConfirmModalOpen(true);
                     }}
                     $bg="#ff5050"
                   >
