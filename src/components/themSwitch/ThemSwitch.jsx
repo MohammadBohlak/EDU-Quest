@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Knob, SwitchWrapper } from "./themSwitch.styles";
 import { setTheme, toggleTheme } from "../../store/slices/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,12 @@ import { api } from "../../utils/api/api";
 const ThemeSwitch = () => {
   const [active, setActive] = useState(false);
   const theme = useSelector((state) => state.theme);
-
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      setActive(user.darK_mode);
+    }
+  }, []);
   const dispatch = useDispatch();
   const switchTheme = () => {
     const token = localStorage.getItem("token");
@@ -28,8 +33,9 @@ const ThemeSwitch = () => {
         )
         .then((res) => {
           localStorage.setItem("darK_mode", res.data.user.dark_mode);
-          console.log(res.data.user);
           dispatch(setTheme(res.data.user.dark_mode ? "dark" : "light"));
+          setActive(res.data.user.dark_mode);
+          // setActive(!active);
         });
     } else {
       setActive(!active);

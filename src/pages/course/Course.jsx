@@ -1,3 +1,4 @@
+import { BiBookmarkAltPlus } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../../utils/api/api";
@@ -10,6 +11,7 @@ import ConfirmModal from "../../components/ui/modals/confirmModal/ConfirmModal";
 import { useTranslation } from "react-i18next";
 import { CardImage, CustomBtn, ShowBtn, StyledVideos } from "./course.styles";
 import { Card } from "react-bootstrap";
+import AddPracticeModal from "../../components/ui/modals/addPracticeModal/AddPracticeModal";
 const Course = () => {
   const { id } = useParams();
   const [videos, setVideos] = useState([]);
@@ -18,6 +20,13 @@ const Course = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [refreshVideos, setRefreshVideos] = useState(true);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [showModalAddPractice, setShowModalAddPractice] = useState(false);
+  const [idsVideosPractice, setIdsVideosPractice] = useState([]);
+  const [videoId, setVideoId] = useState(null);
+  const [reloadVideos, setReloadVideos] = useState(false);
+  // const refreshVideos = ()=>{
+
+  // }
   const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const refreshVideosList = () => {
@@ -37,6 +46,9 @@ const Course = () => {
       .catch((err) => {
         console.log(err);
       });
+    api.get("questions").then((res) => {
+      setIdsVideosPractice(res.data.map((e) => e.video_id));
+    });
   }, [refreshVideos]);
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -64,7 +76,6 @@ const Course = () => {
     <StyledVideos>
       {videos.map((video, index) => (
         <Card style={{ background: "var(--muted-shared)" }} key={index}>
-          {/* <Card.Img variant="top" src={img} /> */}
           <CardImage>
             <span>{index + 1}</span>
           </CardImage>
@@ -100,6 +111,17 @@ const Course = () => {
                   >
                     <MdOutlineDelete />
                   </CustomBtn>
+                  {!idsVideosPractice.includes(video.id) && (
+                    <CustomBtn
+                      onClick={() => {
+                        setVideoId(video.id);
+                        setShowModalAddPractice(true);
+                      }}
+                      $bg="#3b80ff"
+                    >
+                      <BiBookmarkAltPlus />
+                    </CustomBtn>
+                  )}
                 </div>
               )}
               <Link to={`${video.id}`}>
@@ -130,6 +152,14 @@ const Course = () => {
         }}
         handleOk={handleOk}
       />
+      {showModalAddPractice && (
+        <AddPracticeModal
+          isOpen={showModalAddPractice}
+          setIsOpen={setShowModalAddPractice}
+          videoId={videoId}
+          refreshVideosList={refreshVideosList}
+        />
+      )}
     </StyledVideos>
   );
 };

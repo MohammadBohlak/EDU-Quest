@@ -50,6 +50,7 @@ export const Main = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     padding: 20px;
+    padding-bottom: 100px;
   }
 `;
 export const SidebarItem = styled(Link)`

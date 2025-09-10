@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import YouTube from "react-youtube";
 import { api } from "../../../utils/api/api";
@@ -32,18 +31,17 @@ const parseDurationToSeconds = (duration) => {
   return hh * 3600 + mm * 60 + ss;
 };
 
-const VideoPlayer = ({ url }) => {
+const VideoPlayer = () => {
   const { videoId } = useParams();
   const [vedioIdentifier, setVideoIdentifier] = useState("");
   const playerRef = useRef(null);
   const hasStoppedRef = useRef(false);
   const [isOpen, setIsOpen] = useState(false);
   const [stopTime, setStopTime] = useState(10); // default fallback
-
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState("");
   const [isErr, setIsErr] = useState(false);
-
+  const [videoPractice, setVideoPractice] = useState("");
   useEffect(() => {
     const token = localStorage.getItem("token");
     api
@@ -55,6 +53,19 @@ const VideoPlayer = ({ url }) => {
         const durationInSeconds = parseDurationToSeconds(res.data.duration);
         setStopTime(durationInSeconds);
       });
+    api
+      .get(`questions`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const practice = res.data.filter((e) => e.video_id == videoId)[0];
+        console.log(practice);
+        setVideoPractice({
+          ...practice,
+          content: practice.question_text,
+          answer_correct: practice.correct_answer,
+        });
+      });
   }, []);
 
   const opts = {
@@ -65,14 +76,8 @@ const VideoPlayer = ({ url }) => {
     },
   };
 
-  const practice = {
-    content: "what is 5 * 5",
-    options: ["10", "15", "25"],
-    answer_correct: "25",
-  };
-
   const handleSubmit = (selectedAnswer) => {
-    if (selectedAnswer === practice.answer_correct) {
+    if (selectedAnswer == videoPractice.correct_answer) {
       setIsErr(false);
       setMessage("Correct Answer");
       setShowToast(true);
@@ -96,7 +101,6 @@ const VideoPlayer = ({ url }) => {
 
   const onReady = (event) => {
     playerRef.current = event.target;
-
     const interval = setInterval(() => {
       if (playerRef.current && !hasStoppedRef.current) {
         const currentTime = playerRef.current.getCurrentTime();
@@ -122,13 +126,13 @@ const VideoPlayer = ({ url }) => {
   return (
     <VideoContainer>
       <PracticeModal
-        // isOpen={true}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        practice={practice}
+        practice={videoPractice}
         handleSubmit={handleSubmit}
       />
       <YouTube videoId={vedioIdentifier} opts={opts} onReady={onReady} />
+
       <Toast $err={isErr} message={message} show={showToast} />
     </VideoContainer>
   );

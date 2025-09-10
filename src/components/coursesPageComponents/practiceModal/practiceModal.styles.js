@@ -30,6 +30,7 @@ export const Option = styled.label`
   display: block;
   margin-bottom: 10px;
   cursor: pointer;
+  font-size: var(--min-text);
 `;
 
 export const SubmitButton = styled.button`
