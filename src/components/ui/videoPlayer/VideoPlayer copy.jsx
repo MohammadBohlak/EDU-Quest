@@ -2,9 +2,11 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import YouTube from "react-youtube";
 import { api } from "../../../utils/api/api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
-function extractYouTubeVideoId(url) {
+import PracticeModal from "../../coursesPageComponents/practiceModal/PracticeModal";
+
+export const extractYouTubeVideoId = (url) => {
   try {
     const parsedUrl = new URL(url);
     const hostname = parsedUrl.hostname;
@@ -14,45 +16,86 @@ function extractYouTubeVideoId(url) {
     }
 
     if (hostname.includes("youtu.be")) {
-      return parsedUrl.pathname.slice(1); // يحذف أول "/"
+      return parsedUrl.pathname.slice(1);
     }
 
-    return null; // إذا لم يكن الرابط من YouTube
+    return null;
   } catch (error) {
     console.error("Invalid URL:", error);
     return null;
   }
-}
+};
 
 const VideoPlayer = ({ url }) => {
   const { videoId } = useParams();
   const [vedioIdentifier, setVideoIdentifier] = useState("");
+  const playerRef = useRef(null);
+  const hasStoppedRef = useRef(false); // لمنع التكرار
+  const [isOpen, setIsOpen] = useState(true);
   useEffect(() => {
-    api.get(`videos/${videoId}`).then((res) => {
-      console.log(res.data);
-      setVideoIdentifier(extractYouTubeVideoId(res.data.video_url));
-    });
+    const token = localStorage.getItem("token");
+    api
+      .get(`videos/${videoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setVideoIdentifier(extractYouTubeVideoId(res.data.video_url));
+        console.log(res.data.duration); // hh:mm:ss
+      });
   }, []);
+
   const opts = {
     height: "100%",
     width: "100%",
     playerVars: {
-      autoplay: 0,
+      autoplay: 1,
     },
   };
-  // const videoId = extractYouTubeVideoId(url);
+  const practice = {
+    content: "what is 5 * 5",
+    options: ["10", "15", "25"],
+    answer_correct: "25",
+  };
+
+  const onReady = (event) => {
+    playerRef.current = event.target;
+
+    const interval = setInterval(() => {
+      if (playerRef.current && !hasStoppedRef.current) {
+        const currentTime = playerRef.current.getCurrentTime();
+        if (Math.floor(currentTime) >= 10) {
+          console.log("stopped");
+          hasStoppedRef.current = true;
+          playerRef.current.pauseVideo();
+
+          setTimeout(() => {
+            playerRef.current.playVideo();
+          }, 3000);
+
+          clearInterval(interval);
+        }
+      }
+    }, 1000);
+  };
 
   return (
     <VideoContainer>
-      <YouTube videoId={vedioIdentifier} opts={opts} />
+      <PracticeModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        practice={practice}
+      />
+      <YouTube videoId={vedioIdentifier} opts={opts} onReady={onReady} />
     </VideoContainer>
   );
 };
+
 export default VideoPlayer;
 
 const VideoContainer = styled.div`
   max-width: 100%;
   height: 500px;
+  position: relative;
   iframe {
     height: 500px !important;
   }

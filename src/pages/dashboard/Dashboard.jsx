@@ -49,6 +49,9 @@ const Dashboard = () => {
       .then((res) => {
         navigate("/");
         dispatch(logout());
+      })
+      .catch((eer) => {
+        console.log(eer);
       });
   };
   useEffect(() => {

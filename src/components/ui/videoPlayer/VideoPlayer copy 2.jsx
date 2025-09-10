@@ -4,8 +4,9 @@ import YouTube from "react-youtube";
 import { api } from "../../../utils/api/api";
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
+import PracticeModal from "../../coursesPageComponents/practiceModal/PracticeModal";
 
-function extractYouTubeVideoId(url) {
+export const extractYouTubeVideoId = (url) => {
   try {
     const parsedUrl = new URL(url);
     const hostname = parsedUrl.hostname;
@@ -23,18 +24,32 @@ function extractYouTubeVideoId(url) {
     console.error("Invalid URL:", error);
     return null;
   }
-}
+};
+
+const parseDurationToSeconds = (duration) => {
+  const [hh, mm, ss] = duration.split(":").map(Number);
+  return hh * 3600 + mm * 60 + ss;
+};
 
 const VideoPlayer = ({ url }) => {
   const { videoId } = useParams();
   const [vedioIdentifier, setVideoIdentifier] = useState("");
   const playerRef = useRef(null);
-  const hasStoppedRef = useRef(false); // لمنع الطباعة أكثر من مرة
+  const hasStoppedRef = useRef(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [stopTime, setStopTime] = useState(10); // default fallback
 
   useEffect(() => {
-    api.get(`videos/${videoId}`).then((res) => {
-      setVideoIdentifier(extractYouTubeVideoId(res.data.video_url));
-    });
+    const token = localStorage.getItem("token");
+    api
+      .get(`videos/${videoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setVideoIdentifier(extractYouTubeVideoId(res.data.video_url));
+        const durationInSeconds = parseDurationToSeconds(res.data.duration);
+        setStopTime(durationInSeconds);
+      });
   }, []);
 
   const opts = {
@@ -45,15 +60,35 @@ const VideoPlayer = ({ url }) => {
     },
   };
 
+  const practice = {
+    content: "what is 5 * 5",
+    options: ["10", "15", "25"],
+    answer_correct: "25",
+  };
+
+  const handleSubmit = (selectedAnswer) => {
+    if (selectedAnswer === practice.answer_correct) {
+      console.log("اجابتك صحيحة");
+    } else {
+      console.log("اجابتك خاطئة");
+    }
+
+    setIsOpen(false);
+    setTimeout(() => {
+      playerRef.current?.playVideo();
+    }, 500); // استئناف بعد إغلاق المودل
+  };
+
   const onReady = (event) => {
     playerRef.current = event.target;
 
     const interval = setInterval(() => {
       if (playerRef.current && !hasStoppedRef.current) {
         const currentTime = playerRef.current.getCurrentTime();
-        if (Math.floor(currentTime) >= 10) {
-          console.log("stopped");
+        if (Math.floor(currentTime) >= stopTime) {
           hasStoppedRef.current = true;
+          playerRef.current.pauseVideo();
+          setIsOpen(true);
           clearInterval(interval);
         }
       }
@@ -62,6 +97,12 @@ const VideoPlayer = ({ url }) => {
 
   return (
     <VideoContainer>
+      <PracticeModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        practice={practice}
+        handleSubmit={handleSubmit}
+      />
       <YouTube videoId={vedioIdentifier} opts={opts} onReady={onReady} />
     </VideoContainer>
   );

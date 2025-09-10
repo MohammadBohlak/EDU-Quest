@@ -242,5 +242,6 @@
       "notFound": "This video does not exist or is not suitable for publication on this platform"
     },
     "success": "The modification process was completed successfully"
-  }
+  },
+  "modalPractice": "Send Answer"
 }
