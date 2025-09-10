@@ -3,7 +3,20 @@ import VideoModal from "../../ui/modals/videoModal/VideoModal";
 import { api } from "../../../utils/api/api";
 import * as Yup from "yup";
 import { DataContext } from "../../../context/DataProvider";
-
+import { useTranslation } from "react-i18next";
+import { extractYouTubeVideoId } from "../../ui/videoPlayer/VideoPlayer";
+import Toast from "../../ui/toast/Toast";
+const checkYouTubeVideo = async (videoId) => {
+  try {
+    await api.get(
+      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
+    );
+    return true;
+  } catch (err) {
+    if (err.response?.status === 404) return false;
+    return false;
+  }
+};
 export default function EditModalForm({
   courseSelected,
   videoToEditId,
@@ -12,6 +25,11 @@ export default function EditModalForm({
   courseId,
   refreshVideosList,
 }) {
+  const { t } = useTranslation();
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isErr, setIsErr] = useState(false);
+
   const [initialValues, setInitialValues] = useState({
     title: "",
     description: "",
@@ -61,20 +79,35 @@ export default function EditModalForm({
   };
 
   // مخطط التحقق
+  // const validationSchema = Yup.object({
+  // title: Yup.string().required("Video title is required"),
+  // description: Yup.string(),
+  // url: Yup.string().required("Video URL is required"),
+  // video_order: Yup.string().required("Video order is required"),
+  // hour_duration: Yup.number()
+  // .typeError("Must be a number")
+  // .required("Hour is required"),
+  // minute_duration: Yup.number()
+  // .typeError("Must be a number")
+  // .required("Minute is required"),
+  // second_duration: Yup.number()
+  // .typeError("Must be a number")
+  // .required("Second is required"),
+  // });
   const validationSchema = Yup.object({
-    title: Yup.string().required("Video title is required"),
+    title: Yup.string().required(t("addVideoModal.validation.title")),
     description: Yup.string(),
-    url: Yup.string().required("Video URL is required"),
-    video_order: Yup.string().required("Video order is required"),
+    url: Yup.string().required(t("addVideoModal.validation.url")),
+    video_order: Yup.string().required(t("addVideoModal.validation.order")),
     hour_duration: Yup.number()
-      .typeError("Must be a number")
-      .required("Hour is required"),
+      .typeError(t("addVideoModal.validation.number"))
+      .required(t("addVideoModal.validation.hour")),
     minute_duration: Yup.number()
-      .typeError("Must be a number")
-      .required("Minute is required"),
+      .typeError(t("addVideoModal.validation.number"))
+      .required(t("addVideoModal.validation.minute")),
     second_duration: Yup.number()
-      .typeError("Must be a number")
-      .required("Second is required"),
+      .typeError(t("addVideoModal.validation.number"))
+      .required(t("addVideoModal.validation.second")),
   });
 
   // عند إرسال التعديل
@@ -95,21 +128,40 @@ export default function EditModalForm({
       video_order: rest.video_order,
     };
 
+    const videoId = extractYouTubeVideoId(payload.video_url);
+
     // console.log("Update payload:", payload);
     const token = localStorage.getItem("token");
-    api
-      .put(`videos/${videoToEditId}`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        console.log("Edited successfully", res.data);
-        setIsOpen(false);
-        refreshVideosList();
-        setShow(false);
-      })
-      .catch((err) => console.error(err));
+    checkYouTubeVideo(videoId).then((res) => {
+      if (res) {
+        api
+          .put(`videos/${videoToEditId}`, payload, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => {
+            console.log("Edited successfully", res.data);
+            setIsOpen(false);
+            refreshVideosList();
+            setShow(false);
+            setIsErr(false);
+            setMessage(t("addVideoModal.success"));
+            setShowToast(true);
+            setTimeout(() => {
+              setShowToast(false);
+            }, 5000);
+          })
+          .catch((err) => console.error(err));
+      } else {
+        setMessage(t("addVideoModal.error.notFound"));
+        setIsErr(true);
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 5000);
+      }
+    });
   };
 
   return (
@@ -127,6 +179,7 @@ export default function EditModalForm({
           }}
         />
       )}
+      <Toast $err={isErr} message={message} show={showToast} />
     </>
   );
 }

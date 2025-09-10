@@ -5,7 +5,7 @@ import { api } from "../../../utils/api/api";
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
-function extractYouTubeVideoId(url) {
+export const extractYouTubeVideoId = (url) => {
   try {
     const parsedUrl = new URL(url);
     const hostname = parsedUrl.hostname;
@@ -23,7 +23,7 @@ function extractYouTubeVideoId(url) {
     console.error("Invalid URL:", error);
     return null;
   }
-}
+};
 
 const VideoPlayer = ({ url }) => {
   const { videoId } = useParams();

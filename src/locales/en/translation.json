@@ -227,5 +227,20 @@
   "modalForm": {
     "select": "Select",
     "submit": "Submit"
+  },
+  "addVideoModal": {
+    "validation": {
+      "title": "Video title is required",
+      "url": "Video URL is required",
+      "order": "Video order is required",
+      "hour": "Hour is required",
+      "minute": "Minute is required",
+      "second": "Second is required",
+      "number": "Must be a number"
+    },
+    "error": {
+      "notFound": "This video does not exist or is not suitable for publication on this platform"
+    },
+    "success": "The modification process was completed successfully"
   }
 }
