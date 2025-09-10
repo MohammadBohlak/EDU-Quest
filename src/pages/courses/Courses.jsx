@@ -130,16 +130,14 @@ const Courses = () => {
           <SearchInput
             value={srch}
             onChange={(e) => setSrch(e.target.value)}
-            placeholder="Search for courses"
+            placeholder={t("coursesPage.searchPlaceHolder")}
           />
         </InputContainer>
       </TopCourses>
 
       {isAdmin && <MainHeading>{t("coursesPage.title")}</MainHeading>}
       {isPublisher && (
-        <MainHeadingPrimaryShared>
-          {t("coursesPage.publishertitle")}
-        </MainHeadingPrimaryShared>
+        <MainHeading>{t("coursesPage.publishertitle")}</MainHeading>
       )}
       <div className="d-flex align-items-center gap-5 flex-wrap ">
         {isAdmin && (

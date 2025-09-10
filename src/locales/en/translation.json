@@ -124,6 +124,7 @@
   "coursesPage": {
     "title": "Courses",
     "publishertitle": "My Courses",
+    "searchPlaceHolder": "Search for courses",
     "add": {
       "scientific": "Add Scientific Field",
       "course": "Add Course"

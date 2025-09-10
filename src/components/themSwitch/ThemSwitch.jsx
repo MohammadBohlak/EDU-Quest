@@ -15,14 +15,11 @@ const ThemeSwitch = () => {
 
     if (token && user) {
       const userId = user.id;
-      const darK_mode = localStorage.getItem("darK_mode");
-      // console.log(darK_mode);
-      const newTheme = darK_mode == true ? false : true;
-      localStorage.setItem("darK_mode", newTheme);
+      const newTheme = theme === "dark" ? "light" : "dark";
       api
         .put(
           `users/${userId}`,
-          { dark_mode: newTheme },
+          { dark_mode: newTheme === "dark" },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -30,13 +27,9 @@ const ThemeSwitch = () => {
           }
         )
         .then((res) => {
-          // const updatedLang = res.data.user.language;
-          // i18n.changeLanguage(updatedLang);
-          // dispatch(changeLanguage(updatedLang));
-          // localStorage.setItem("darK_mode", res.data.user.dark_mode);
-          console.log(res.data.user.dark_mode);
-          // setActive(res.data.user.dark_mode);
-          // dispatch(setTheme(`${res.data.user.dark_mode ? "dark" : "light"}`));
+          localStorage.setItem("darK_mode", res.data.user.dark_mode);
+          console.log(res.data.user);
+          dispatch(setTheme(res.data.user.dark_mode ? "dark" : "light"));
         });
     } else {
       setActive(!active);

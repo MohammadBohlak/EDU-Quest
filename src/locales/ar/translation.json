@@ -124,6 +124,7 @@
   "coursesPage": {
     "title": "الدورات",
     "publishertitle": "دوراتي",
+    "searchPlaceHolder": "ابحث عن دورة",
     "add": {
       "scientific": "إضافة مجال علمي",
       "course": "إضافة كورس"

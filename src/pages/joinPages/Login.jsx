@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/userSlice";
 import Toast from "../../components/ui/toast/Toast";
 import { changeLanguage } from "../../store/slices/languageSlice";
+import { setTheme } from "../../store/slices/themeSlice";
 // import { changeLanguage } from "i18next";
 
 const Login = () => {
@@ -52,9 +53,8 @@ const Login = () => {
         const { token, user } = res.data;
         const lang = user.language;
         const darK_mode = user.darK_mode;
-        localStorage.setItem("language", lang);
-        localStorage.setItem("darK_mode", darK_mode);
         dispatch(changeLanguage(lang));
+        dispatch(setTheme(darK_mode ? "dark" : "light"));
         dispatch(login({ token, user }));
         if (user.role === "admin" || user.role === "publisher") {
           if (user.role === "admin") navigate("/dashboard/users");

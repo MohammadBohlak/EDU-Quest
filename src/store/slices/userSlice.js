@@ -23,6 +23,8 @@ const userSlice = createSlice({
       state.user = action.payload.user;
       localStorage.setItem("token", state.token);
       localStorage.setItem("user", JSON.stringify(state.user));
+      localStorage.setItem("language", state.user.language);
+      localStorage.setItem("darK_mode", state.user.darK_mode);
     },
     logout(state) {
       localStorage.removeItem("token");
