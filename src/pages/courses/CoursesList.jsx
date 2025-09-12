@@ -135,11 +135,11 @@ const CoursesList = ({ courses }) => {
                     {t("coursesList.showCourse")}
                   </PrimarySharedButton>
                 </Link>
-                {console.log()}
-                {(user.name == course.publisher_name ||
+                {console.log(user.user_name == course.publisher_name)}
+                {(user.user_name == course.publisher_name ||
                   user.role == "admin") && (
                   <div className="d-flex align-items-center gap-3">
-                    {user.name == course.publisher_name && (
+                    {user.user_name == course.publisher_name && (
                       <CustomBtn
                         onClick={() => {
                           SetCourseSelected(course);

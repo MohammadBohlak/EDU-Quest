@@ -243,5 +243,22 @@
     },
     "success": "The modification process was completed successfully"
   },
-  "modalPractice": "Send Answer"
+  "modalPractice": "Send Answer",
+  "addPracticeModal": {
+    "labels": {
+      "question": "Question",
+      "option": "Option {{num}}",
+      "correctAnswer": "Correct Answer",
+      "close": "Close",
+      "submit": "Submit"
+    },
+    "validation": {
+      "questionRequired": "Question is required",
+      "optionRequired": "Option is required",
+      "optionsMin": "At least one option is required",
+      "correctRequired": "Correct answer is required",
+      "correctInvalid": "Correct answer must be one of the options"
+    },
+    "success": "The exercise has been added successfully"
+  }
 }

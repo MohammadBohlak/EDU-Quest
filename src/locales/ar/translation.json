@@ -241,5 +241,22 @@
     },
     "success": "تمت عملية التعديل بنجاح"
   },
-  "modalPractice": "إرسال الإجابة"
+  "modalPractice": "إرسال الإجابة",
+  "addPracticeModal": {
+    "labels": {
+      "question": "سؤال التمرين",
+      "option": "الخيار {{num}}",
+      "correctAnswer": "الإجابة الصحيحة",
+      "close": "إغلاق",
+      "submit": "إرسال"
+    },
+    "validation": {
+      "questionRequired": "سؤال التمرين مطلوب",
+      "optionRequired": "الخيار مطلوب",
+      "optionsMin": "يجب إضافة خيار واحد على الأقل",
+      "correctRequired": "الإجابة الصحيحة مطلوبة",
+      "correctInvalid": "الإجابة الصحيحة يجب أن تكون من الخيارات"
+    },
+    "success": "تم إضافة التمرين بنجاح"
+  }
 }

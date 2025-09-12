@@ -30,7 +30,7 @@ import { logout } from "../../store/slices/userSlice";
 const Dashboard = () => {
   const { t } = useTranslation();
   const role = useSelector((state) => state.user.user.role);
-  const userName = useSelector((state) => state.user.user.name);
+  const userName = useSelector((state) => state.user.user.user_name);
   const navigate = useNavigate();
   const userID = useSelector((s) => s.user.user.id);
   const dispatch = useDispatch();
