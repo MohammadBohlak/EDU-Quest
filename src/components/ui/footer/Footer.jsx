@@ -70,12 +70,12 @@ const Footer = () => {
             </Col>
             <Col md={6} lg={4} className="ml-3">
               <FooterLinkTitle>{t("footer.subscribeTitle")}</FooterLinkTitle>
-              <div className="mb-3 d-flex gap-3">
+              <div className="mb-3 d-flex align-items-center  gap-3">
                 <Input
                   type="email"
                   placeholder={t("footer.subscribePlaceholder")}
                 />
-                <StyledPrimaryButton>
+                <StyledPrimaryButton style={{ height: "60px" }}>
                   {t("footer.subscribeButton")}
                 </StyledPrimaryButton>
               </div>
