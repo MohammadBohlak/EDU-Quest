@@ -82,10 +82,10 @@ const CustomNavbar = () => {
               <StyledNavLink href="#testimonial" className="nav-link">
                 {t("navbar.navLinks.testimonial")}
               </StyledNavLink>
-              {(user.role == "admin" || user.role == "publisher") && (
+              {(user?.role == "admin" || user?.role == "publisher") && (
                 <StyledLink
                   to={`/dashboard/${
-                    user.role == "admin" ? "users" : "courses"
+                    user?.role == "admin" ? "users" : "courses"
                   }`}
                   className="nav-link"
                 >
