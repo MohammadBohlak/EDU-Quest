@@ -1,13 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
-import { NavLink, useLocation } from 'react-router-dom';
-import MyContainer from '../myContainer/MyContainer';
-import MyThemSwitch from '../../themSwitch/ThemSwitch';
-import LangSwitch from '../../langSwitch/LangSwitch';
-import { StyledNavbar, StyledNavLink } from './navbar.styles';
-import { useTranslation } from 'react-i18next';
-import logo from ".././../../assets/images/gpt.png"
-import styled from 'styled-components';
+import React, { useState, useRef, useEffect } from "react";
+import { Navbar, Nav } from "react-bootstrap";
+import { NavLink, useLocation } from "react-router-dom";
+import MyContainer from "../myContainer/MyContainer";
+import MyThemSwitch from "../../themSwitch/ThemSwitch";
+import LangSwitch from "../../langSwitch/LangSwitch";
+import { StyledLink, StyledNavbar, StyledNavLink } from "./navbar.styles";
+import { useTranslation } from "react-i18next";
+import logo from ".././../../assets/images/gpt.png";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 const CustomNavbar = () => {
   // حالة للتحكم بفتح وإغلاق القائمة
@@ -17,8 +19,9 @@ const CustomNavbar = () => {
   // للحصول على التغييرات في مسار التنقل (بذلك يتم إغلاق القائمة عند النقر على أحد الروابط)
   const location = useLocation();
 
-  const {t} = useTranslation() ; 
+  const { t } = useTranslation();
 
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   // دالة لإغلاق القائمة عند النقر خارجها
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -37,26 +40,34 @@ const CustomNavbar = () => {
     setExpanded(false);
   }, [location]);
 
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+    console.log(user);
+  }, [localStorage.getItem("user")]);
+
   const Logo = styled.div`
     width: 100px;
-    img{
+    img {
       max-width: 100%;
     }
-  `
+  `;
   return (
     <div ref={navRef}>
-      <StyledNavbar  expand="lg" expanded={expanded}>
+      <StyledNavbar expand="lg" expanded={expanded}>
         <MyContainer>
           <Navbar.Brand as={NavLink} to="/">
             {/* {t("navbar.logo")} */}
-          <Logo>
+            <Logo>
               <img src={logo} />
-          </Logo>
+            </Logo>
           </Navbar.Brand>
-         
-          <Navbar.Collapse className="justify-content-center" id="basic-navbar-nav">
-            <Nav >
-              <StyledNavLink href= "#hero" className="nav-link">
+
+          <Navbar.Collapse
+            className="justify-content-center"
+            id="basic-navbar-nav"
+          >
+            <Nav>
+              <StyledNavLink href="#hero" className="nav-link">
                 {t("navbar.navLinks.home")}
               </StyledNavLink>
               <StyledNavLink href="#courses" className="nav-link">
@@ -68,19 +79,32 @@ const CustomNavbar = () => {
               <StyledNavLink href="#about" className="nav-link">
                 {t("navbar.navLinks.about")}
               </StyledNavLink>
-              <StyledNavLink href='#testimonial' className="nav-link">
+              <StyledNavLink href="#testimonial" className="nav-link">
                 {t("navbar.navLinks.testimonial")}
               </StyledNavLink>
+              {(user.role == "admin" || user.role == "publisher") && (
+                <StyledLink
+                  to={`/dashboard/${
+                    user.role == "admin" ? "users" : "courses"
+                  }`}
+                  className="nav-link"
+                >
+                  {t("navbar.navLinks.dashboard")}
+                </StyledLink>
+              )}
             </Nav>
           </Navbar.Collapse>
-         <div className='nav-buttons' style={{display: "flex", alignItems: "center", gap:"10px"}}>
-         <LangSwitch/>
-          <MyThemSwitch/>
-          <Navbar.Toggle
-            aria-controls="basic-navbar-nav"
-            onClick={() => setExpanded(expanded ? false : true)}
-          />
-         </div>
+          <div
+            className="nav-buttons"
+            style={{ display: "flex", alignItems: "center", gap: "10px" }}
+          >
+            <LangSwitch />
+            <MyThemSwitch />
+            <Navbar.Toggle
+              aria-controls="basic-navbar-nav"
+              onClick={() => setExpanded(expanded ? false : true)}
+            />
+          </div>
         </MyContainer>
       </StyledNavbar>
     </div>

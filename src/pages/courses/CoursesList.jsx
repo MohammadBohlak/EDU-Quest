@@ -39,6 +39,7 @@ const CoursesList = ({ courses }) => {
   const [isModalEditCourseOpen, setIsModalEditCourseOpen] = useState(false);
 
   const [user, setUser] = useState({});
+  const [localUser, setLocalUser] = useState(localStorage.getItem("user"));
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     setUser(userData);
@@ -135,9 +136,8 @@ const CoursesList = ({ courses }) => {
                     {t("coursesList.showCourse")}
                   </PrimarySharedButton>
                 </Link>
-                {console.log(user.user_name == course.publisher_name)}
-                {(user.user_name == course.publisher_name ||
-                  user.role == "admin") && (
+                {console.log("user", user)}
+                {(user.id == course.publisher_id || user.role == "admin") && (
                   <div className="d-flex align-items-center gap-3">
                     {user.user_name == course.publisher_name && (
                       <CustomBtn

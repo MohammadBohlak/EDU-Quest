@@ -25,6 +25,7 @@ const DataProvider = ({ children }) => {
   const fetchCourses = async () => {
     try {
       const res = await api.get("courses");
+      console.log(res.data);
       setCourses(res.data);
       setRawCourses(res.data);
     } catch (err) {

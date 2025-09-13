@@ -25,6 +25,13 @@ export const GlobalStyles = createGlobalStyle`
     --normal-text: 2.4rem; 
     --small-text: 20px; 
     --min-text: 1.6rem; 
+     @media (min-width: 769px) and (max-width: 992px){
+      --big-text: 2.8rem ; 
+      --normal-text: 1.8rem; 
+      --small-text: 16px; 
+      --min-text: 1.4rem; 
+
+    }
     @media (max-width: 768px){
       --big-text: 2.4rem ; 
       --normal-text: 1.6rem; 
@@ -32,12 +39,6 @@ export const GlobalStyles = createGlobalStyle`
       --min-text: 1.2rem; 
       
     }
-    @media (min-width: 769px) and (max-width: 992px){
-      --big-text: 2.8rem ; 
-      --normal-text: 1.8rem; 
-      --small-text: 16px; 
-      --min-text: 1.4rem; 
-
-    }
+   
   }
 `;
