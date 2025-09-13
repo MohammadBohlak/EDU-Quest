@@ -11,6 +11,8 @@ import { PrimaryTitle, SecondaryTitle } from "../../common/texts/Titles";
 import CoursesSlider from "./coursesSlider/CoursesSlider";
 import CategoriesButtonList from "../../../pages/courses/categoriesButtonList/CategoriesButtonList";
 import { DataContext } from "../../../context/DataProvider";
+import { motion } from "motion/react";
+import { scrollAnimation } from "../../../assets/animations";
 
 export default function CoursesSection() {
   const { t } = useTranslation();
@@ -21,22 +23,26 @@ export default function CoursesSection() {
     setCourses(rawCourses.filter((course) => course.title.includes(srch)));
   }, [srch]);
   return (
-    <section id="courses">
+    <section id="courses" style={{ marginTop: "50px" }}>
       <SectionContainer>
         <Row className="align-items-center">
           <Col xs={12} md={6} lg={7} className="mb-4">
-            <SecondaryTitle>{t("courses.title1")} </SecondaryTitle>
-            <PrimaryTitle>{t("courses.title2")} </PrimaryTitle>
-            <SecondaryTitle>{t("courses.title3")}</SecondaryTitle>
+            <motion.div {...scrollAnimation}>
+              <SecondaryTitle>{t("courses.title1")} </SecondaryTitle>
+              <PrimaryTitle>{t("courses.title2")} </PrimaryTitle>
+              <SecondaryTitle>{t("courses.title3")}</SecondaryTitle>
+            </motion.div>
           </Col>
           <Col style={{ position: "relative" }} xs={12} md={6} lg={5}>
-            <SearchInput
-              type="text"
-              placeholder={t("courses.searchPlaceholder")}
-              value={srch}
-              onChange={(e) => setSrch(e.target.value)}
-            />
-            <SearchIcon />
+            <motion.div {...scrollAnimation}>
+              <SearchInput
+                type="text"
+                placeholder={t("courses.searchPlaceholder")}
+                value={srch}
+                onChange={(e) => setSrch(e.target.value)}
+              />
+              <SearchIcon />
+            </motion.div>
           </Col>
         </Row>
         <Row>

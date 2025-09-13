@@ -74,8 +74,8 @@ const LanguageSwitcher = () => {
           dispatch(changeLanguage(updatedLang));
         });
     } else {
-      i18n.changeLanguage(newLang);
       dispatch(changeLanguage(newLang));
+      i18n.changeLanguage(newLang);
     }
   };
 

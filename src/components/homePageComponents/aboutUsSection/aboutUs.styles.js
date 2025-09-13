@@ -1,5 +1,6 @@
 import { Col } from "react-bootstrap";
 import styled from "styled-components";
+import { motion } from "motion/react";
 
 export const StyledAboutUs = styled.div`
   margin-top: 50px;
@@ -8,7 +9,7 @@ export const StyledAboutUs = styled.div`
   }
 `;
 
-export const AboutRight = styled(Col)`
+export const AboutRight = styled(motion.div)`
   display: flex;
   justify-content: flex-end;
   img {

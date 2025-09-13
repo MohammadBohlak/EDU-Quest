@@ -6,6 +6,8 @@ import {
 } from "./categoriesButtonList.styles";
 import { api } from "../../../utils/api/api";
 import { DataContext } from "../../../context/DataProvider";
+import { motion } from "motion/react";
+import { scrollAnimation } from "../../../assets/animations";
 
 // مصفوفة ثابتة للمجالات (يمكنك تخصيصها أو تعديلها لاحقاً)
 // const categories = [
@@ -41,17 +43,19 @@ const CategoriesButtonList = () => {
     }
   };
   return (
-    <ButtonScrollContainer fluid>
-      {categories.map((category, index) => (
-        <StyledButton
-          key={index}
-          active={activeCategory === category.name}
-          onClick={() => hanldeSelectCategory(category)}
-        >
-          {category.name}
-        </StyledButton>
-      ))}
-    </ButtonScrollContainer>
+    <motion.div {...scrollAnimation}>
+      <ButtonScrollContainer fluid>
+        {categories.map((category, index) => (
+          <StyledButton
+            key={index}
+            active={activeCategory === category.name}
+            onClick={() => hanldeSelectCategory(category)}
+          >
+            {category.name}
+          </StyledButton>
+        ))}
+      </ButtonScrollContainer>
+    </motion.div>
   );
 };
 

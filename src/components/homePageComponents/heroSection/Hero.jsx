@@ -18,6 +18,8 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { motion } from "motion/react"; // ✅ استيراد مكتبة Motion
+
 export default function Hero() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -26,11 +28,21 @@ export default function Hero() {
   useEffect(() => {
     setUser(user);
   }, []);
+  const faedAnimation = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { duration: 1.5 },
+  };
   return (
     <HeroSection id="hero">
       <MyContainer>
         <Row style={{ justifyContent: "space-between" }}>
-          <LeftHero md={12} xl={6}>
+          <LeftHero
+            {...faedAnimation}
+            className="col-md-12 col-xl-6"
+            md={12}
+            xl={6}
+          >
             <NormalTextSecondary>
               {t("hero.startFavouriteCourse")}
             </NormalTextSecondary>
@@ -64,7 +76,12 @@ export default function Hero() {
             )}
           </LeftHero>
 
-          <RighttHero md={12} xl={6}>
+          <RighttHero
+            {...faedAnimation}
+            className="col-md-12 col-xl-6"
+            md={12}
+            xl={6}
+          >
             <ConImg>
               <img src={man} />
               <div className="c c1">

@@ -5,7 +5,6 @@ import MyContainer from "../../ui/myContainer/MyContainer";
 
 export const SectionContainer = styled(MyContainer)`
   align-items: center;
-  margin-top: 20px;
   @media (max-width: 768px) {
     text-align: center;
     row-gap: 10px;
@@ -27,8 +26,8 @@ export const SearchInput = styled(Form.Control)`
 
 export const SearchIcon = styled(FaSearch)`
   position: absolute;
-  right: ${({ theme }) => theme.lang === "en" ? "24px" : "auto"};
-  left: ${({ theme }) => theme.lang === "en" ? "auto" : "24px"};
+  right: ${({ theme }) => (theme.lang === "en" ? "24px" : "auto")};
+  left: ${({ theme }) => (theme.lang === "en" ? "auto" : "24px")};
   top: 10px;
   font-size: 30px;
   padding: 5px;

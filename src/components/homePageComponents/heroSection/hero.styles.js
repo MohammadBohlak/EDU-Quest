@@ -1,5 +1,6 @@
 import { Col } from "react-bootstrap";
 import styled from "styled-components";
+import { motion } from "motion/react"; // ✅ استيراد مكتبة Motion
 
 export const HeroSection = styled.section`
   padding-top: var(--padding-top);
@@ -7,7 +8,7 @@ export const HeroSection = styled.section`
   background: ${({ theme }) => theme.colors.backgroundSections};
 `;
 
-export const LeftHero = styled(Col)`
+export const LeftHero = styled(motion.div)`
   display: flex;
   flex-direction: column;
   /* align-items: baseline; */
@@ -18,7 +19,7 @@ export const LeftHero = styled(Col)`
     text-align: center;
   }
 `;
-export const RighttHero = styled(Col)`
+export const RighttHero = styled(motion.div)`
   max-width: 95%;
   display: flex;
   justify-content: flex-end;

@@ -1,11 +1,11 @@
 import styled from "styled-components";
-
+import { motion } from "motion/react";
 export const NormalText = styled.span`
   font-size: var(--normal-text);
   font-weight: 500;
   color: ${({ theme }) => theme.colors.textPrimary};
 `;
-export const NormalTextSecondary = styled.span`
+export const NormalTextSecondary = styled(motion.span)`
   font-size: var(--normal-text);
   font-weight: 500;
   color: ${({ theme }) => theme.colors.textSecondary};
@@ -14,8 +14,8 @@ export const NormalTextSecondary = styled.span`
 export const NormalTextPrimaryShared = styled.span`
   font-size: var(--normal-text);
   color: ${({ theme }) => theme.colors.primaryShared};
-`
+`;
 export const NormalTextShared = styled.span`
   font-size: var(--normal-text);
   color: ${({ theme }) => theme.colors.textShared};
-`
+`;

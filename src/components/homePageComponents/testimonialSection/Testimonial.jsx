@@ -6,24 +6,37 @@ import { SmallTextSecondary } from "../../common/texts/SmallText";
 import { Row } from "react-bootstrap";
 import SwiperTestimonial from "./swiperTestimonial/SwiperTestimonial";
 import { useTranslation } from "react-i18next";
+import { motion } from "motion/react";
+import { useTheme } from "styled-components";
 
 const Testimonial = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
+  const theme = useTheme();
   return (
-    <StyledTestimonial id="testimonial"> 
-      <MyContainer>
-        <TopTestimonial>
-          <MainHeading>{t("testimonial.title")}</MainHeading>
-          <SmallTextSecondary style={{ fontWeight: "700" }}>
-            {t("testimonial.question")}
-          </SmallTextSecondary>
-          <StyledSmallTextSecondary>
-            {t("testimonial.description")}
-          </StyledSmallTextSecondary>
-        </TopTestimonial>
-      </MyContainer>
-      <SwiperTestimonial />
-    </StyledTestimonial>
+    <motion.div
+      initial={{ backgroundColor: "#fff" }}
+      whileInView={{ backgroundColor: theme.colors.backgroundSections }}
+      transition={{ duration: 1.5 }}
+      viewport={{
+        once: true,
+        amount: 0.8,
+      }}
+    >
+      <StyledTestimonial id="testimonial">
+        <MyContainer>
+          <TopTestimonial>
+            <MainHeading>{t("testimonial.title")}</MainHeading>
+            <SmallTextSecondary style={{ fontWeight: "700" }}>
+              {t("testimonial.question")}
+            </SmallTextSecondary>
+            <StyledSmallTextSecondary>
+              {t("testimonial.description")}
+            </StyledSmallTextSecondary>
+          </TopTestimonial>
+        </MyContainer>
+        <SwiperTestimonial />
+      </StyledTestimonial>
+    </motion.div>
   );
 };
 
@@ -32,7 +45,7 @@ export default Testimonial;
 const StyledTestimonial = styled.div`
   margin-top: 100px;
   padding: 50px 0;
-  background: ${({ theme }) => theme.colors.backgroundSections};
+  /* background: ${({ theme }) => theme.colors.backgroundSections}; */
 `;
 const StyledSmallTextSecondary = styled(SmallTextSecondary)`
   width: 80%;

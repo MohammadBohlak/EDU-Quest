@@ -6,19 +6,23 @@ import MyThemSwitch from "../../themSwitch/ThemSwitch";
 import LangSwitch from "../../langSwitch/LangSwitch";
 import { StyledLink, StyledNavbar, StyledNavLink } from "./navbar.styles";
 import { useTranslation } from "react-i18next";
-import logo from "../../../assets/images/gpt.png";
+import logo from ".././../../assets/images/gpt.png";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { motion } from "motion/react"; // ✅ استيراد مكتبة Motion
 
 const CustomNavbar = () => {
+  // حالة للتحكم بفتح وإغلاق القائمة
   const [expanded, setExpanded] = useState(false);
+  // مرجع لتحديد المنطقة الخاصة بالنافبار
   const navRef = useRef(null);
+  // للحصول على التغييرات في مسار التنقل (بذلك يتم إغلاق القائمة عند النقر على أحد الروابط)
   const location = useLocation();
-  const { t } = useTranslation();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
+  const { t } = useTranslation();
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  // دالة لإغلاق القائمة عند النقر خارجها
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
@@ -31,6 +35,7 @@ const CustomNavbar = () => {
     };
   }, []);
 
+  // إغلاق القائمة عند تغيير المسار (أي عند النقر على رابط)
   useEffect(() => {
     setExpanded(false);
   }, [location]);
@@ -46,31 +51,14 @@ const CustomNavbar = () => {
       max-width: 100%;
     }
   `;
-
-  // ✅ عناصر النافبار
-  const navItems = [
-    { label: t("navbar.navLinks.home"), href: "#hero" },
-    { label: t("navbar.navLinks.courses"), href: "#courses" },
-    { label: t("navbar.navLinks.questions"), href: "#questions" },
-    { label: t("navbar.navLinks.about"), href: "#about" },
-    { label: t("navbar.navLinks.testimonial"), href: "#testimonial" },
-  ];
-
-  if (user?.role === "admin" || user?.role === "publisher") {
-    navItems.push({
-      label: t("navbar.navLinks.dashboard"),
-      to: `/dashboard/${user?.role === "admin" ? "users" : "courses"}`,
-      isLink: true,
-    });
-  }
-
   return (
     <div ref={navRef}>
       <StyledNavbar expand="lg" expanded={expanded}>
         <MyContainer>
           <Navbar.Brand as={NavLink} to="/">
+            {/* {t("navbar.logo")} */}
             <Logo>
-              <img src={logo} alt="Logo" />
+              <img src={logo} />
             </Logo>
           </Navbar.Brand>
 
@@ -78,35 +66,34 @@ const CustomNavbar = () => {
             className="justify-content-center"
             id="basic-navbar-nav"
           >
-            <Nav style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-              {navItems.map((item, index) =>
-                item.isLink ? (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: -30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                  >
-                    <StyledLink to={item.to} className="nav-link">
-                      {item.label}
-                    </StyledLink>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: -30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                  >
-                    <StyledNavLink href={item.href} className="nav-link">
-                      {item.label}
-                    </StyledNavLink>
-                  </motion.div>
-                )
+            <Nav>
+              <StyledNavLink href="#hero" className="nav-link">
+                {t("navbar.navLinks.home")}
+              </StyledNavLink>
+              <StyledNavLink href="#courses" className="nav-link">
+                {t("navbar.navLinks.courses")}
+              </StyledNavLink>
+              <StyledNavLink href="#questions" className="nav-link">
+                {t("navbar.navLinks.questions")}
+              </StyledNavLink>
+              <StyledNavLink href="#about" className="nav-link">
+                {t("navbar.navLinks.about")}
+              </StyledNavLink>
+              <StyledNavLink href="#testimonial" className="nav-link">
+                {t("navbar.navLinks.testimonial")}
+              </StyledNavLink>
+              {(user?.role == "admin" || user?.role == "publisher") && (
+                <StyledLink
+                  to={`/dashboard/${
+                    user?.role == "admin" ? "users" : "courses"
+                  }`}
+                  className="nav-link"
+                >
+                  {t("navbar.navLinks.dashboard")}
+                </StyledLink>
               )}
             </Nav>
           </Navbar.Collapse>
-
           <div
             className="nav-buttons"
             style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -115,7 +102,7 @@ const CustomNavbar = () => {
             <MyThemSwitch />
             <Navbar.Toggle
               aria-controls="basic-navbar-nav"
-              onClick={() => setExpanded(!expanded)}
+              onClick={() => setExpanded(expanded ? false : true)}
             />
           </div>
         </MyContainer>

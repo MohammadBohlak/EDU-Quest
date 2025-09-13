@@ -6,23 +6,34 @@ import MyContainer from "../../ui/myContainer/MyContainer";
 import { SmallTextShared } from "../../common/texts/SmallText";
 import { AboutRight, StyledAboutUs } from "./aboutUs.styles";
 import { useTranslation } from "react-i18next";
+import { scrollAnimation } from "../../../assets/animations";
 const AboutUs = () => {
   const { t } = useTranslation();
 
   return (
     <StyledAboutUs id="about">
       <MyContainer>
-        <MainHeadingPrimaryShared>
+        <MainHeadingPrimaryShared {...scrollAnimation}>
           {t("aboutUs.title")}
         </MainHeadingPrimaryShared>
         <Row className="align-items-center">
           <Col md={6} sm={12} className="d-flex flex-column">
-            <SmallTextShared style={{ fontWeight: "700", margin: "28px 0" }}>
+            <SmallTextShared
+              {...scrollAnimation}
+              style={{ fontWeight: "700", margin: "28px 0" }}
+            >
               {t("aboutUs.welcomeMessage")}
             </SmallTextShared>
-            <SmallTextShared>{t("aboutUs.description")}</SmallTextShared>
+            <SmallTextShared {...scrollAnimation}>
+              {t("aboutUs.description")}
+            </SmallTextShared>
           </Col>
-          <AboutRight md={6} sm={12}>
+          <AboutRight
+            {...scrollAnimation}
+            className="col-md-6 col-sm-12"
+            md={6}
+            sm={12}
+          >
             <img src={img} />
           </AboutRight>
         </Row>
