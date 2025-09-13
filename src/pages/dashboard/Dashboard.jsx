@@ -26,11 +26,14 @@ import MyContainer from "../../components/ui/myContainer/MyContainer";
 import { FaRegUserCircle } from "react-icons/fa";
 import { api } from "../../utils/api/api";
 import { logout } from "../../store/slices/userSlice";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const role = useSelector((state) => state.user.user.role);
-  const userName = useSelector((state) => state.user.user.user_name);
+  const [userName, setUserName] = useState(
+    JSON.parse(localStorage.getItem("user"))?.name
+  );
   const navigate = useNavigate();
   const userID = useSelector((s) => s.user.user.id);
   const dispatch = useDispatch();
