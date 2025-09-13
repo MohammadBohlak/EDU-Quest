@@ -9,6 +9,23 @@ export const SignUpContainer = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
+  .form-control {
+    /* background-color: ${({ theme }) =>
+      theme.colors.backgroundMutedShared}; */
+    position: relative;
+    padding-left: 30px;
+  }
+  .form-control + svg {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--normal-text);
+  }
+  .invalid-feedback {
+    position: absolute;
+    bottom: -25px;
+  }
 `;
 
 export const LeftSection = styled.div`

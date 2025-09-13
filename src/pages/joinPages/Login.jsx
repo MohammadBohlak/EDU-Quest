@@ -14,6 +14,8 @@ import {
   SignUpContainer,
   StyledForm,
 } from "./styles";
+import { MdOutlineMail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
 import { api } from "../../utils/api/api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -112,8 +114,12 @@ const Login = () => {
                 noValidate
                 onSubmit={handleSubmit}
               >
-                <BootstrapForm.Group controlId="formEmail">
+                <BootstrapForm.Group
+                  className="position-relative"
+                  controlId="formEmail"
+                >
                   <BootstrapForm.Control
+                    className="position-relative"
                     type="email"
                     name="email"
                     placeholder={t("login.email")}
@@ -122,12 +128,16 @@ const Login = () => {
                     onBlur={handleBlur}
                     isInvalid={touched.email && !!errors.email}
                   />
+                  <MdOutlineMail />
                   <BootstrapForm.Control.Feedback type="invalid">
                     {errors.email}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 
-                <BootstrapForm.Group controlId="formPassword">
+                <BootstrapForm.Group
+                  className="position-relative"
+                  controlId="formPassword"
+                >
                   <BootstrapForm.Control
                     type="password"
                     name="password"
@@ -137,12 +147,16 @@ const Login = () => {
                     onBlur={handleBlur}
                     isInvalid={touched.password && !!errors.password}
                   />
+                  <RiLockPasswordLine />
                   <BootstrapForm.Control.Feedback type="invalid">
                     {errors.password}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="d-flex justify-content-center">
+                <BootstrapForm.Group
+                  className="position-relative"
+                  className="d-flex justify-content-center"
+                >
                   <PrimarySharedButton
                     type="submit"
                     disabled={isSubmitting}

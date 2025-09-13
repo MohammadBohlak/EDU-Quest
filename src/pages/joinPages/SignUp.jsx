@@ -18,7 +18,10 @@ import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/userSlice";
 import { api } from "../../utils/api/api";
 import Toast from "../../components/ui/toast/Toast";
-
+import { MdOutlineMail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+// import { CiUser } from "react-icons/ci";
+import { FaRegUser } from "react-icons/fa6";
 const SignUp = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -118,7 +121,10 @@ const SignUp = () => {
                   {t("signup.title")}
                 </MainHeading>
 
-                <BootstrapForm.Group controlId="formusername">
+                <BootstrapForm.Group
+                  className="position-relative"
+                  controlId="formusername"
+                >
                   <BootstrapForm.Control
                     type="text"
                     name="username"
@@ -128,12 +134,17 @@ const SignUp = () => {
                     onBlur={handleBlur}
                     isInvalid={touched.username && !!errors.username}
                   />
+                  <FaRegUser />
+
                   <BootstrapForm.Control.Feedback type="invalid">
                     {errors.username}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 
-                <BootstrapForm.Group controlId="formEmail">
+                <BootstrapForm.Group
+                  className="position-relative"
+                  controlId="formEmail"
+                >
                   <BootstrapForm.Control
                     type="email"
                     name="email"
@@ -143,12 +154,17 @@ const SignUp = () => {
                     onBlur={handleBlur}
                     isInvalid={touched.email && !!errors.email}
                   />
+                  <MdOutlineMail />
+
                   <BootstrapForm.Control.Feedback type="invalid">
                     {errors.email}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 
-                <BootstrapForm.Group controlId="formPassword">
+                <BootstrapForm.Group
+                  className="position-relative"
+                  controlId="formPassword"
+                >
                   <BootstrapForm.Control
                     type="password"
                     name="password"
@@ -158,12 +174,17 @@ const SignUp = () => {
                     onBlur={handleBlur}
                     isInvalid={touched.password && !!errors.password}
                   />
+                  <RiLockPasswordLine />
+
                   <BootstrapForm.Control.Feedback type="invalid">
                     {errors.password}
                   </BootstrapForm.Control.Feedback>
                 </BootstrapForm.Group>
 
-                <BootstrapForm.Group className="d-flex justify-content-center">
+                <BootstrapForm.Group
+                  className="position-relative"
+                  className="d-flex justify-content-center"
+                >
                   <PrimarySharedButton
                     type="submit"
                     disabled={isSubmitting}
