@@ -76,25 +76,25 @@ function App() {
     // localStorage.removeItem("token");
     // localStorage.removeItem("user");
 
-    dispatch(logout());
-    // api
-    //   .post(
-    //     "logout",
-    //     {},
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   )
-    //   .then((res) => {
-    //     dispatch(logout());
+    // dispatch(logout());
+    api
+      .post(
+        "logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        dispatch(logout());
 
-    //     // navigate("/");
-    //   })
-    //   .catch((err) => {
-    //     console.error("Logout failed:", err);
-    //   });
+        // navigate("/");
+      })
+      .catch((err) => {
+        console.error("Logout failed:", err);
+      });
   };
   return (
     <div dir={direction}>
