@@ -39,24 +39,24 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     const token = localStorage.getItem("token");
-    // dispatch(logout());
-    api
-      .post(
-        "logout",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        navigate("/");
-        dispatch(logout());
-      })
-      .catch((eer) => {
-        console.log(eer);
-      });
+    dispatch(logout());
+    // api
+    //   .post(
+    //     "logout",
+    //     {},
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   )
+    //   .then((res) => {
+    //     navigate("/");
+    //     dispatch(logout());
+    //   })
+    //   .catch((eer) => {
+    //     console.log(eer);
+    //   });
   };
   useEffect(() => {
     // const user = userData.user;
