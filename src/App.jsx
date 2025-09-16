@@ -77,6 +77,7 @@ function App() {
     localStorage.removeItem("user");
 
     dispatch(logout());
+    navigate("/");
     // api
     //   .post(
     //     "logout",

@@ -108,7 +108,6 @@ const VideoPlayer = () => {
           hasStoppedRef.current = true;
           playerRef.current.pauseVideo();
 
-          // ✅ الخروج من fullscreen قبل عرض المودل
           if (document.fullscreenElement) {
             document.exitFullscreen().then(() => {
               setIsOpen(true);

@@ -12,6 +12,7 @@ const AddCourseModal = ({ isOpen, setIsOpen }) => {
   const { categories, refresh } = useContext(DataContext);
   const [displayCategories, setDisplayCategories] = useState([]);
   useEffect(() => {
+    // console.log("displayCategories", displayCategories);
     setDisplayCategories(
       categories.map((e) => {
         return { value: e.id, label: e.name };

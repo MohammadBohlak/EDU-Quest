@@ -91,9 +91,13 @@ export default function ModalForm({
                         >
                           <option value="">{t("modalForm.select")}</option>
                           {field.options?.map((opt, i) => (
-                            <option key={i} value={opt.value}>
-                              {opt.label}
-                            </option>
+                            <>
+                              {opt.label != "All" && (
+                                <option key={i} value={opt.value}>
+                                  {opt.label}
+                                </option>
+                              )}
+                            </>
                           ))}
                         </Field>
                       ) : (

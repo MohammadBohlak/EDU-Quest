@@ -45,8 +45,9 @@ const Login = () => {
   });
 
   const handleSubmit = (values, { setSubmitting }) => {
+    console.log(values);
     api
-      .post("https://edu-f.onrender.com/api/login", {
+      .post("login", {
         email: values.email,
         password: values.password,
       })

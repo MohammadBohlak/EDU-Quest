@@ -40,6 +40,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     const token = localStorage.getItem("token");
     dispatch(logout());
+    navigate("/");
     // api
     //   .post(
     //     "logout",

@@ -38,7 +38,7 @@ const CoursesList = ({ courses }) => {
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [isModalEditCourseOpen, setIsModalEditCourseOpen] = useState(false);
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [localUser, setLocalUser] = useState(localStorage.getItem("user"));
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
@@ -136,10 +136,11 @@ const CoursesList = ({ courses }) => {
                     {t("coursesList.showCourse")}
                   </PrimarySharedButton>
                 </Link>
-                {console.log("user", user)}
-                {(user.id == course.publisher_id || user.role == "admin") && (
+                {console.log("user", course)}
+                {(user.name == course.publisher_name ||
+                  user.role == "admin") && (
                   <div className="d-flex align-items-center gap-3">
-                    {user.user_name == course.publisher_name && (
+                    {user.name == course.publisher_name && (
                       <CustomBtn
                         onClick={() => {
                           SetCourseSelected(course);
