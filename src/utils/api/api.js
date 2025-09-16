@@ -3,8 +3,8 @@ import axios from "axios";
 import { store } from "../../store/store";
 import { hideLoader, showLoader } from "../../store/slices/loaderSlice";
 
-// const API_BASE_URL = "https://edu-f.onrender.com/api";
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+// const API_BASE_URL = "http://127.0.0.1:8000/api";
+const API_BASE_URL = "https://edu-f.onrender.com/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
