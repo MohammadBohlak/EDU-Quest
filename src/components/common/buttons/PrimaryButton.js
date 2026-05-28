@@ -18,19 +18,19 @@ const PrimaryButton = styled.button`
     opacity: 0.9;
   }
   @media (max-width: 992px) {
-    height: 41px;
     padding: 11px 13px;
+    height: 41px;
     border-radius: 10px;
   }
 `;
 export default PrimaryButton;
 
 export const PrimarySharedButton = styled(PrimaryButton)`
-  width: 117px ; 
+  width: 117px;
   height: 42px;
   padding: 9px 27px;
   font-weight: normal;
   border-radius: 15px;
-  background: ${({ theme }) => theme.colors.primaryShared}; 
-  color: white ; 
-`
+  background: ${({ theme }) => theme.colors.primaryShared};
+  color: white;
+`;

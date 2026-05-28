@@ -6,7 +6,6 @@ import { GlobalStyles } from "./styles/GlobalStyles";
 import Hero from "./components/homePageComponents/heroSection/Hero";
 import "./i18n";
 
-import { useTranslation } from "react-i18next";
 import CoursesSection from "./components/homePageComponents/courseSectionComponents/CourseSection";
 import FAQSection from "./components/homePageComponents/FAQSectionComponents/FAQSection";
 import AboutUs from "./components/homePageComponents/aboutUsSection/AboutUs";
@@ -15,20 +14,19 @@ import Footer from "./components/ui/footer/Footer";
 import SignUp from "./pages/singnUp/SignUp";
 
 function App() {
-  // const lang = useSelector((state) => state.lang.language)
-  const { i18n } = useTranslation();
+  // مصدر الحقيقة الوحيد: Redux (متزامن مع i18n عبر listener middleware)
   const theme = useSelector((state) => state.theme);
-  const direction = i18n.language === "ar" ? "rtl" : "ltr";
+  const language = useSelector((state) => state.lang.language);
+  const direction = language === "ar" ? "rtl" : "ltr";
+
+  const activeTheme =
+    theme === "light"
+      ? { ...lightTheme, lang: language }
+      : { ...darkTheme, lang: language };
 
   return (
     <div dir={direction}>
-      <ThemeProvider
-        theme={
-          theme === "light"
-            ? { ...lightTheme, lang: i18n.language }
-            : { ...darkTheme, lang: i18n.language }
-        }
-      >
+      <ThemeProvider theme={activeTheme}>
         <GlobalStyles />
         <CustomNavbar />
         <Hero />
